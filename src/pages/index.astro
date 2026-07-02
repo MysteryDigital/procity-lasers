@@ -37,11 +37,11 @@ const placeholderProjects = [
 >
 
   {/* ── HERO ── */}
-  <section class="min-h-screen bg-accent relative overflow-hidden flex items-center pt-16">
+  <section class="lg:min-h-screen bg-accent relative overflow-hidden flex items-start lg:items-center pt-16">
     <div class="bg-grid-overlay absolute inset-0 pointer-events-none" aria-hidden="true"></div>
     <div class="absolute bottom-0 left-0 right-0 h-44 bg-gradient-to-b from-transparent to-accent/40 pointer-events-none" aria-hidden="true"></div>
 
-    <div class="max-w-screen-xl mx-auto px-12 py-20 w-full grid grid-cols-[55%_1fr] gap-[72px] items-center">
+    <div class="max-w-screen-xl mx-auto px-4 sm:px-8 lg:px-12 py-12 lg:py-20 w-full grid grid-cols-1 lg:grid-cols-[55%_1fr] lg:gap-[72px] items-center">
 
       {/* Text column */}
       <div class="hero-fade-up">
@@ -66,7 +66,7 @@ const placeholderProjects = [
       </div>
 
       {/* Visual column — before/after placeholder */}
-      <div class="hero-fade-up-2" aria-hidden="true">
+      <div class="hero-fade-up-2 hidden lg:block" aria-hidden="true">
         <div class="relative aspect-[4/3] border border-surface/16 overflow-hidden bg-surface-dark">
           <div class="bg-grid-overlay-subtle absolute inset-0"></div>
           <div class="absolute left-0 top-0 w-1/2 h-full bg-on-surface/20"></div>
@@ -103,8 +103,8 @@ const placeholderProjects = [
 
   {/* ── TRUST BAR ── */}
   <section aria-label="Accreditations and compliance">
-    <div class="max-w-screen-xl mx-auto px-12">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-px bg-neutral-light border-b border-neutral-light">
+    <div class="max-w-screen-xl mx-auto px-4 sm:px-8 lg:px-12">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-px bg-neutral-light border-b border-neutral-light">
         {[
           { label: 'Compliance',     value: 'BS 8221 Compliant Methods' },
           { label: 'Accreditation',  value: 'CSCS Registered Operatives' },
@@ -123,12 +123,12 @@ const placeholderProjects = [
 
   {/* ── SERVICES ── */}
   <section id="services" class="bg-surface py-24">
-    <div class="max-w-screen-xl mx-auto px-12">
+    <div class="max-w-screen-xl mx-auto px-4 sm:px-8 lg:px-12">
       <div class="flex items-center gap-3 mb-3.5">
         <div class="w-6 h-px bg-neutral-mid" aria-hidden="true"></div>
         <span class="text-[10px] font-medium tracking-[0.18em] text-neutral-mid uppercase">Services</span>
       </div>
-      <div class="flex items-end justify-between mb-14">
+      <div class="flex items-end justify-between mb-14 flex-wrap gap-4">
         <h2 class="m-0 text-[clamp(32px,4vw,44px)] font-light text-neutral-dark tracking-[-0.02em] leading-[1.1]">Specialist capabilities</h2>
         <a href="/contact/" class="flex items-center gap-1.5 text-[13px] font-medium text-accent tracking-[0.01em] hover:opacity-80 transition-opacity">
           <span>Discuss a project</span>
@@ -159,7 +159,7 @@ const placeholderProjects = [
   {/* ── PROCESS ── */}
   <section class="bg-accent py-24 relative overflow-hidden">
     <div class="bg-grid-overlay absolute inset-0 pointer-events-none" aria-hidden="true"></div>
-    <div class="max-w-screen-xl mx-auto px-12 relative">
+    <div class="max-w-screen-xl mx-auto px-4 sm:px-8 lg:px-12 relative">
       <div class="flex items-center gap-3 mb-3.5">
         <div class="w-6 h-px bg-surface/30" aria-hidden="true"></div>
         <span class="text-[10px] font-medium tracking-[0.18em] text-surface/65 uppercase">How we work</span>
@@ -171,7 +171,7 @@ const placeholderProjects = [
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-surface/8 border-t border-surface/12">
         {steps.map((step) => (
-          <div class="bg-accent pt-10 pb-10 pr-11">
+          <div class="bg-accent pt-10 pb-10 px-4 sm:px-8 md:pl-0 md:pr-11">
             <div class="text-[10px] font-normal tracking-[0.08em] text-surface/40 mb-5" aria-hidden="true">{step.num}</div>
             <h3 class="m-0 mb-3 text-[18px] font-medium text-surface tracking-[-0.01em]">{step.title}</h3>
             <p class="m-0 text-[14px] leading-[1.72] text-surface/65">{step.desc}</p>
@@ -184,12 +184,12 @@ const placeholderProjects = [
 
   {/* ── PROJECTS ── */}
   <section id="projects" class="bg-surface py-24">
-    <div class="max-w-screen-xl mx-auto px-12">
+    <div class="max-w-screen-xl mx-auto px-4 sm:px-8 lg:px-12">
       <div class="flex items-center gap-3 mb-3.5">
         <div class="w-6 h-px bg-neutral-mid" aria-hidden="true"></div>
         <span class="text-[10px] font-medium tracking-[0.18em] text-neutral-mid uppercase">Projects</span>
       </div>
-      <div class="flex items-end justify-between mb-12">
+      <div class="flex items-end justify-between mb-12 flex-wrap gap-4">
         <h2 class="m-0 text-[clamp(32px,4vw,44px)] font-light text-neutral-dark tracking-[-0.02em] leading-[1.1]">Selected work</h2>
         <a href="/work/" class="flex items-center gap-1.5 text-[13px] font-medium text-accent hover:opacity-80 transition-opacity">
           <span>View all projects</span>
@@ -225,8 +225,8 @@ const placeholderProjects = [
 
   {/* ── CREDENTIALS ── */}
   <section id="credentials" class="bg-neutral-dark py-24">
-    <div class="max-w-screen-xl mx-auto px-12">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-[96px] items-start">
+    <div class="max-w-screen-xl mx-auto px-4 sm:px-8 lg:px-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-[96px] items-start">
 
         {/* Stats */}
         <div>
@@ -279,8 +279,8 @@ const placeholderProjects = [
   {/* ── CONTACT ── */}
   <section id="contact" class="bg-accent py-24 relative overflow-hidden">
     <div class="bg-grid-overlay absolute inset-0 pointer-events-none" aria-hidden="true"></div>
-    <div class="max-w-screen-xl mx-auto px-12 relative">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-[96px] items-start">
+    <div class="max-w-screen-xl mx-auto px-4 sm:px-8 lg:px-12 relative">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-[96px] items-start">
 
         {/* Contact details */}
         <div>
@@ -329,7 +329,7 @@ const placeholderProjects = [
               <label>Don't fill this out if you're human: <input name="bot-field" /></label>
             </p>
 
-            <div class="grid grid-cols-2 gap-3">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label for="name" class="block text-[9.5px] font-semibold tracking-[0.12em] uppercase text-surface/65 mb-2">
                   Name <span aria-label="required">*</span>
