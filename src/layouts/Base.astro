@@ -67,6 +67,8 @@ const siteTitle = title === 'Pro City Laser Removal'
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
+    <slot name="head" />
+
     <!-- Suppress cookie banner before paint for returning visitors -->
     <script is:inline>
       if (localStorage.getItem('cookie_consent')) {
@@ -81,5 +83,17 @@ const siteTitle = title === 'Pro City Laser Removal'
     </main>
     <Footer />
     <CookieConsent />
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script is:inline>
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on('init', function(user) {
+          if (!user) {
+            window.netlifyIdentity.on('login', function() {
+              document.location.href = '/admin/';
+            });
+          }
+        });
+      }
+    </script>
   </body>
 </html>

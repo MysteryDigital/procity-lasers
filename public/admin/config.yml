@@ -35,16 +35,31 @@ collections:
         widget: image
         required: false
         hint: "Use this OR the Before/After fields below — not both."
+      - label: Standalone image caption
+        name: imageCaption
+        widget: string
+        required: false
+        hint: "Optional caption shown below the image."
       - label: Before image
         name: before
         widget: image
         required: false
         hint: "Must be paired with an After image."
+      - label: Before image caption
+        name: beforeCaption
+        widget: string
+        required: false
+        hint: "Optional caption for the before side of the slider."
       - label: After image
         name: after
         widget: image
         required: false
         hint: "Must be paired with a Before image."
+      - label: After image caption
+        name: afterCaption
+        widget: string
+        required: false
+        hint: "Optional caption for the after side of the slider."
       - label: Video URL
         name: videoUrl
         widget: string

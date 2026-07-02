@@ -63,6 +63,8 @@ const related = allProjects
           after={data.after}
           beforeAlt={`${data.title} — before laser cleaning`}
           afterAlt={`${data.title} — after laser cleaning`}
+          beforeCaption={data.beforeCaption}
+          afterCaption={data.afterCaption}
           eager={true}
         />
       ) : data.videoUrl ? (
@@ -76,15 +78,20 @@ const related = allProjects
           ></iframe>
         </div>
       ) : data.image ? (
-        <Image
-          src={data.image}
-          alt={data.title}
-          class="w-full h-auto"
-          loading="eager"
-          fetchpriority="high"
-          widths={[800, 1200, 1600]}
-          sizes="(min-width: 1280px) 1200px, 100vw"
-        />
+        <figure>
+          <Image
+            src={data.image}
+            alt={data.title}
+            class="w-full h-auto"
+            loading="eager"
+            fetchpriority="high"
+            widths={[800, 1200, 1600]}
+            sizes="(min-width: 1280px) 1200px, 100vw"
+          />
+          {data.imageCaption && (
+            <figcaption class="mt-2 text-xs text-neutral-mid leading-snug">{data.imageCaption}</figcaption>
+          )}
+        </figure>
       ) : null}
     </div>
 

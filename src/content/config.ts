@@ -11,8 +11,11 @@ const projects = defineCollection({
         category: z.enum(SERVICE_CATEGORIES),
         caption: z.string().optional(),
         image: image().optional(),
+        imageCaption: z.string().optional(),
         before: image().optional(),
+        beforeCaption: z.string().optional(),
         after: image().optional(),
+        afterCaption: z.string().optional(),
         videoUrl: z.string().url().optional(),
         thumbnail: image().optional(),
       })

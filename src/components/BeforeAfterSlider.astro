@@ -6,10 +6,12 @@ interface Props {
   after: ImageMetadata;
   beforeAlt: string;
   afterAlt: string;
+  beforeCaption?: string;
+  afterCaption?: string;
   eager?: boolean;
 }
 
-const { before, after, beforeAlt, afterAlt, eager = false } = Astro.props;
+const { before, after, beforeAlt, afterAlt, beforeCaption, afterCaption, eager = false } = Astro.props;
 const id = `slider-${Math.random().toString(36).slice(2, 8)}`;
 ---
 
@@ -69,6 +71,13 @@ const id = `slider-${Math.random().toString(36).slice(2, 8)}`;
     </div>
   </div>
 </div>
+
+{(beforeCaption || afterCaption) && (
+  <div class="grid grid-cols-2 mt-2 gap-4">
+    <p class="text-xs text-neutral-mid leading-snug">{beforeCaption ?? ''}</p>
+    <p class="text-xs text-neutral-mid leading-snug text-right">{afterCaption ?? ''}</p>
+  </div>
+)}
 
 <script>
   document.querySelectorAll('[data-before-after-slider]').forEach((slider) => {

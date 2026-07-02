@@ -2,10 +2,16 @@
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import BlogCard from '../../components/BlogCard.astro';
+import BlogPagination from '../../components/BlogPagination.astro';
 import { readingTime } from '../../lib/readingTime';
+
+const PAGE_SIZE = 12;
 
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 allPosts.sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+
+const totalPages = Math.ceil(allPosts.length / PAGE_SIZE);
+const pagePosts = allPosts.slice(0, PAGE_SIZE);
 
 const featuredPosts = allPosts.filter((p) => p.data.featured).slice(0, 3);
 
@@ -22,6 +28,11 @@ const categories = [
   title="Laser Cleaning Resources & Case Studies | Pro City Laser Removal"
   description="Articles on commercial laser cleaning — graffiti removal, heritage conservation, fire damage remediation. Written for councils, contractors, and heritage professionals."
 >
+  <Fragment slot="head">
+    {totalPages > 1 && (
+      <link rel="next" href="https://www.procitylasers.com/blog/page/2/" />
+    )}
+  </Fragment>
 
   {/* ── PAGE HEADER ── */}
   <section class="bg-surface pt-16 pb-12">
@@ -109,20 +120,23 @@ const categories = [
   {/* ── ARTICLE GRID ── */}
   <section class="bg-surface py-14">
     <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-12">
-      {allPosts.length > 0 ? (
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-neutral-light border border-neutral-light">
-          {allPosts.map((post) => (
-            <BlogCard
-              title={post.data.title}
-              category={post.data.category}
-              slug={post.slug}
-              description={post.data.description}
-              coverImage={post.data.coverImage}
-              publishDate={post.data.publishDate}
-              readingTime={readingTime(post.body)}
-            />
-          ))}
-        </div>
+      {pagePosts.length > 0 ? (
+        <>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-neutral-light border border-neutral-light">
+            {pagePosts.map((post) => (
+              <BlogCard
+                title={post.data.title}
+                category={post.data.category}
+                slug={post.slug}
+                description={post.data.description}
+                coverImage={post.data.coverImage}
+                publishDate={post.data.publishDate}
+                readingTime={readingTime(post.body)}
+              />
+            ))}
+          </div>
+          <BlogPagination currentPage={1} totalPages={totalPages} />
+        </>
       ) : (
         <p class="text-neutral-mid text-[15px]">Articles will appear here once published.</p>
       )}

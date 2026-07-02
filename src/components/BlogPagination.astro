@@ -1,0 +1,101 @@
+---
+interface Props {
+  currentPage: number;
+  totalPages: number;
+}
+
+const { currentPage, totalPages } = Astro.props;
+
+type PageItem = { type: 'page'; n: number } | { type: 'gap' };
+
+function pageUrl(n: number): string {
+  return n === 1 ? '/blog/' : `/blog/page/${n}/`;
+}
+
+const prevUrl = currentPage > 1 ? pageUrl(currentPage - 1) : null;
+const nextUrl = currentPage < totalPages ? pageUrl(currentPage + 1) : null;
+
+function buildRange(): PageItem[] {
+  if (totalPages <= 7) {
+    return Array.from({ length: totalPages }, (_, i) => ({ type: 'page' as const, n: i + 1 }));
+  }
+  const items: PageItem[] = [{ type: 'page', n: 1 }];
+  const start = Math.max(2, currentPage - 2);
+  const end = Math.min(totalPages - 1, currentPage + 2);
+  if (start > 2) items.push({ type: 'gap' as const });
+  for (let i = start; i <= end; i++) items.push({ type: 'page' as const, n: i });
+  if (end < totalPages - 1) items.push({ type: 'gap' as const });
+  items.push({ type: 'page', n: totalPages });
+  return items;
+}
+
+const pageRange = buildRange();
+---
+
+{totalPages > 1 && (
+  <nav class="mt-12 flex items-center justify-center gap-1.5" aria-label="Pagination">
+
+    {prevUrl ? (
+      <a
+        href={prevUrl}
+        class="flex items-center justify-center w-9 h-9 border border-neutral-light text-neutral-mid hover:border-neutral-mid hover:text-neutral-dark transition-colors"
+        aria-label="Previous page"
+      >
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <path d="M7.5 2.5l-4 4 4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    ) : (
+      <span
+        class="flex items-center justify-center w-9 h-9 border border-neutral-light/40 text-neutral-mid/30 cursor-default"
+        aria-disabled="true"
+        aria-label="Previous page"
+      >
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <path d="M7.5 2.5l-4 4 4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    )}
+
+    {pageRange.map((item) =>
+      item.type === 'gap' ? (
+        <span class="flex items-center justify-center w-9 h-9 text-[12px] text-neutral-mid/50" aria-hidden="true">…</span>
+      ) : item.n === currentPage ? (
+        <span
+          class="flex items-center justify-center w-9 h-9 bg-accent text-surface text-[12px] font-medium tracking-[0.04em]"
+          aria-current="page"
+          aria-label={`Page ${item.n}, current page`}
+        >{item.n}</span>
+      ) : (
+        <a
+          href={pageUrl(item.n)}
+          class="flex items-center justify-center w-9 h-9 border border-neutral-light text-neutral-mid text-[12px] hover:border-neutral-mid hover:text-neutral-dark transition-colors"
+          aria-label={`Page ${item.n}`}
+        >{item.n}</a>
+      )
+    )}
+
+    {nextUrl ? (
+      <a
+        href={nextUrl}
+        class="flex items-center justify-center w-9 h-9 border border-neutral-light text-neutral-mid hover:border-neutral-mid hover:text-neutral-dark transition-colors"
+        aria-label="Next page"
+      >
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <path d="M4.5 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    ) : (
+      <span
+        class="flex items-center justify-center w-9 h-9 border border-neutral-light/40 text-neutral-mid/30 cursor-default"
+        aria-disabled="true"
+        aria-label="Next page"
+      >
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <path d="M4.5 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    )}
+
+  </nav>
+)}
