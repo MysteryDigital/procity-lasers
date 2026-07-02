@@ -1,0 +1,69 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+const allProjects = await getCollection('projects');
+
+const categories = [
+  { slug: 'graffiti', label: 'Graffiti' },
+  { slug: 'heritage', label: 'Heritage' },
+  { slug: 'fire-damage', label: 'Fire Damage' },
+  { slug: 'industrial', label: 'Industrial' },
+  { slug: 'paint-removal', label: 'Paint Removal' },
+];
+---
+
+<Base
+  title="Our Work"
+  description="Before-and-after project photography from Pro City Laser Removal — graffiti, heritage, fire damage, industrial, and paint removal projects across the UK."
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <header class="max-w-2xl mb-10">
+      <h1 class="text-4xl font-semibold text-neutral-dark mb-3">Our Work</h1>
+      <p class="text-neutral-mid">Before-and-after project photography across all five service areas. Use the filters to browse by type of work.</p>
+    </header>
+
+    <nav aria-label="Filter projects by category" class="mb-10">
+      <ul class="flex flex-wrap gap-2">
+        <li>
+          <a
+            href="/work/"
+            class="inline-block px-4 py-2 text-sm border border-accent bg-accent text-surface"
+            aria-current="page"
+          >
+            All
+          </a>
+        </li>
+        {categories.map((c) => (
+          <li>
+            <a
+              href={`/work/${c.slug}/`}
+              class="inline-block px-4 py-2 text-sm border border-neutral-mid/30 text-neutral-mid hover:border-accent hover:text-accent transition-colors"
+            >
+              {c.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    {allProjects.length > 0 ? (
+      <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {allProjects.map((p) => (
+          <li>
+            <ProjectCard
+              title={p.data.title}
+              category={p.data.category}
+              caption={p.data.caption}
+              href={`/work/${p.data.category}/${p.id}/`}
+              isVideo={!!p.data.videoUrl}
+            />
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p class="text-neutral-mid">Project photography will appear here once the gallery is populated.</p>
+    )}
+  </div>
+</Base>

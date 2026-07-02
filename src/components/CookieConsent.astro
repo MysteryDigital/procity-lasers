@@ -1,0 +1,82 @@
+---
+// NOTE: This component links to /privacy/ — that page needs to be created.
+---
+
+<div
+  id="cookie-banner"
+  role="region"
+  aria-label="Cookie consent"
+  class="fixed bottom-0 left-0 right-0 z-50 bg-neutral-dark border-t border-neutral-mid"
+>
+  <div class="max-w-screen-xl mx-auto px-6 py-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <p class="text-sm text-surface leading-relaxed">
+      We use cookies to keep the site working. Some optional cookies help us understand how the site is used.
+      <a
+        href="/privacy/"
+        class="text-surface underline hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surface focus-visible:ring-offset-1 focus-visible:ring-offset-neutral-dark rounded-sm"
+      >
+        Cookie policy
+      </a>.
+    </p>
+    <div class="flex gap-3 shrink-0">
+      <button id="cookie-decline" type="button" class="cookie-btn cookie-btn--ghost">
+        Decline non-essential
+      </button>
+      <button id="cookie-accept" type="button" class="cookie-btn cookie-btn--primary">
+        Accept all cookies
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  :global(.cookie-consent-given) #cookie-banner {
+    display: none;
+  }
+
+  .cookie-btn {
+    min-height: 44px;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 2px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.15s;
+  }
+
+  .cookie-btn:focus-visible {
+    outline: 2px solid rgb(var(--color-surface));
+    outline-offset: 3px;
+  }
+
+  .cookie-btn:hover {
+    opacity: 0.82;
+  }
+
+  .cookie-btn--primary {
+    background-color: rgb(var(--color-accent));
+    color: rgb(var(--color-surface));
+    border: 1px solid rgb(var(--color-accent));
+  }
+
+  .cookie-btn--ghost {
+    background-color: transparent;
+    color: rgb(var(--color-surface));
+    border: 1px solid rgb(var(--color-surface));
+  }
+</style>
+
+<script>
+  const banner = document.getElementById('cookie-banner');
+  const acceptBtn = document.getElementById('cookie-accept');
+  const declineBtn = document.getElementById('cookie-decline');
+
+  function dismiss(choice: string) {
+    localStorage.setItem('cookie_consent', choice);
+    document.documentElement.classList.add('cookie-consent-given');
+  }
+
+  acceptBtn?.addEventListener('click', () => dismiss('accepted'));
+  declineBtn?.addEventListener('click', () => dismiss('declined'));
+</script>

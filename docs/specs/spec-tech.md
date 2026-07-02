@@ -72,7 +72,10 @@ code exposed to him.
    caption.
 3. Upload a **single image** (standalone) or a **before** image + **after** image
    into the same project, labelled via fields.
-4. For video: paste a YouTube/Vimeo link into a video field.
+4. For video: paste a YouTube or Vimeo URL into the video field. Optionally
+   upload a thumbnail image (a still frame). If omitted, a YouTube thumbnail
+   is fetched automatically from the URL; Vimeo projects without a thumbnail
+   upload show a placeholder until one is provided.
 5. Publish — Netlify rebuilds and the change is live in ~1 minute.
 
 **Before/after pairing** is therefore driven by **CMS project fields**, not
@@ -113,7 +116,7 @@ the CMS relationship first, then by matching filename stems.
 
 1. **Domain/DNS:** is `procitylasers.com` registered, and where is DNS managed?
    (Netlify can manage DNS or point via existing registrar.)
-2. **Video hosting:** embed (YouTube/Vimeo — cheap, easy) vs. self-host.
+2. ~~**Video hosting:**~~ **Resolved:** YouTube/Vimeo embed; owner pastes URL into CMS; optional thumbnail upload field (YouTube auto-fetched if omitted; Vimeo shows placeholder).
 3. **Free-tier caps:** confirm expected enquiry volume against Netlify Forms'
    free-tier limit (~100 submissions/mo); upgrade only if needed.
 

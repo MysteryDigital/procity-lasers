@@ -1,0 +1,84 @@
+---
+import Logo from './Logo.astro';
+
+const services = [
+  { label: 'Graffiti Removal', href: '/services/graffiti/' },
+  { label: 'Heritage Conservation', href: '/services/heritage/' },
+  { label: 'Fire Damage', href: '/services/fire-damage/' },
+  { label: 'Industrial Cleaning', href: '/services/industrial/' },
+  { label: 'Paint Removal', href: '/services/paint-removal/' },
+];
+---
+
+<footer class="bg-surface-dark border-t border-surface/7">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+    <div class="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr] gap-16 mb-11">
+
+      <div>
+        <a href="/" class="flex items-center gap-2.5 mb-4 hover:opacity-80 transition-opacity w-fit text-surface" aria-label="Pro City Laser Removal — home">
+          <Logo class="h-7 w-7 flex-shrink-0 text-surface/45" />
+          <span class="text-[13px] font-medium text-surface/60 tracking-tight leading-tight">Pro City Laser Removal</span>
+        </a>
+        <p class="text-[13px] leading-[1.65] text-surface/50 max-w-[256px] mb-5">
+          Specialist laser cleaning across the UK — graffiti, heritage, fire damage, industrial, and paint removal.
+        </p>
+        <div class="text-[13px] leading-[1.8] text-surface/50">
+          <div>
+            <a href="tel:+447878261529" class="hover:text-surface/80 transition-colors">07878 261529</a>
+          </div>
+          <div>
+            <a href="mailto:info@procitylasers.com" class="hover:text-surface/80 transition-colors">info@procitylasers.com</a>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <p class="text-[9px] font-semibold tracking-[0.16em] uppercase text-surface/40 mb-4">Services</p>
+        <ul class="space-y-2.5">
+          {services.map((s) => (
+            <li>
+              <a href={s.href} class="text-[13px] text-surface/55 hover:text-surface/80 transition-colors">
+                {s.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <p class="text-[9px] font-semibold tracking-[0.16em] uppercase text-surface/40 mb-4">Company</p>
+        <ul class="space-y-2.5">
+          {[
+            { label: 'About', href: '/about/' },
+            { label: 'Projects', href: '/work/' },
+            { label: 'Blog', href: '/blog/' },
+            { label: 'Contact', href: '/contact/' },
+          ].map((link) => (
+            <li>
+              <a href={link.href} class="text-[13px] text-surface/55 hover:text-surface/80 transition-colors">
+                {link.label}
+              </a>
+            </li>
+          ))}
+          <li>
+            <a
+              href="https://www.procitypainters.co.uk"
+              class="text-[13px] text-surface/55 hover:text-surface/80 transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Pro City Painters (opens in new tab)"
+            >
+              Pro City Painters ↗
+            </a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="flex flex-col sm:flex-row justify-between items-center gap-2 pt-5 border-t border-surface/7 text-[11.5px] text-surface/30">
+      <p>© {new Date().getFullYear()} Pro City Laser Removal Ltd. All rights reserved.</p>
+      <a href="/privacy-policy/" class="hover:text-surface/60 transition-colors">Privacy Policy</a>
+    </div>
+  </div>
+</footer>

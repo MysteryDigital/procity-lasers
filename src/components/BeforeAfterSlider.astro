@@ -1,0 +1,117 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  before: ImageMetadata;
+  after: ImageMetadata;
+  beforeAlt: string;
+  afterAlt: string;
+  eager?: boolean;
+}
+
+const { before, after, beforeAlt, afterAlt, eager = false } = Astro.props;
+const id = `slider-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<div
+  class="relative overflow-hidden select-none"
+  data-before-after-slider
+  aria-label="Before and after comparison. Use left and right arrow keys to reveal before or after image."
+  role="img"
+>
+  <div class="pointer-events-none">
+    <Image
+      src={after}
+      alt={afterAlt}
+      class="w-full h-auto block"
+      loading={eager ? 'eager' : 'lazy'}
+      fetchpriority={eager ? 'high' : undefined}
+      widths={[640, 1024, 1280, 1920]}
+      sizes="100vw"
+    />
+  </div>
+
+  <div
+    class="absolute inset-0 overflow-hidden"
+    data-before-panel
+    style="clip-path: inset(0 50% 0 0)"
+  >
+    <Image
+      src={before}
+      alt={beforeAlt}
+      class="w-full h-auto block"
+      loading={eager ? 'eager' : 'lazy'}
+      fetchpriority={eager ? 'high' : undefined}
+      widths={[640, 1024, 1280, 1920]}
+      sizes="100vw"
+    />
+  </div>
+
+  {/* Labels */}
+  <span class="absolute top-3 left-3 bg-neutral-dark/70 text-neutral-light text-xs px-2 py-1 pointer-events-none" aria-hidden="true">Before</span>
+  <span class="absolute top-3 right-3 bg-neutral-dark/70 text-neutral-light text-xs px-2 py-1 pointer-events-none" aria-hidden="true">After</span>
+
+  {/* Drag handle */}
+  <div
+    class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-1 bg-surface cursor-ew-resize flex items-center justify-center"
+    data-handle
+    role="slider"
+    aria-label="Before/after divider"
+    aria-valuemin={0}
+    aria-valuemax={100}
+    aria-valuenow={50}
+    tabindex="0"
+  >
+    <div class="w-8 h-8 rounded-full bg-surface border-2 border-neutral-mid flex items-center justify-center shadow">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M5 8H1M1 8L3 6M1 8L3 10M11 8H15M15 8L13 6M15 8L13 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('[data-before-after-slider]').forEach((slider) => {
+    const panel = slider.querySelector('[data-before-panel]') as HTMLElement;
+    const handle = slider.querySelector('[data-handle]') as HTMLElement;
+    if (!panel || !handle) return;
+
+    let dragging = false;
+
+    const setPosition = (pct: number) => {
+      const clamped = Math.max(0, Math.min(100, pct));
+      panel.style.clipPath = `inset(0 ${100 - clamped}% 0 0)`;
+      handle.style.left = `${clamped}%`;
+      handle.setAttribute('aria-valuenow', String(Math.round(clamped)));
+    };
+
+    const getPct = (clientX: number) => {
+      const rect = slider.getBoundingClientRect();
+      return ((clientX - rect.left) / rect.width) * 100;
+    };
+
+    slider.addEventListener('mousedown', (e) => {
+      dragging = true;
+      setPosition(getPct((e as MouseEvent).clientX));
+    });
+    slider.addEventListener('touchstart', (e) => {
+      dragging = true;
+      setPosition(getPct((e as TouchEvent).touches[0].clientX));
+    }, { passive: true });
+
+    window.addEventListener('mousemove', (e) => {
+      if (dragging) setPosition(getPct(e.clientX));
+    });
+    window.addEventListener('touchmove', (e) => {
+      if (dragging) setPosition(getPct(e.touches[0].clientX));
+    }, { passive: true });
+    window.addEventListener('mouseup', () => { dragging = false; });
+    window.addEventListener('touchend', () => { dragging = false; });
+
+    handle.addEventListener('keydown', (e) => {
+      const current = Number(handle.getAttribute('aria-valuenow') ?? 50);
+      if (e.key === 'ArrowLeft') { e.preventDefault(); setPosition(current - 5); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); setPosition(current + 5); }
+    });
+  });
+</script>

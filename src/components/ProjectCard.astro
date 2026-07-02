@@ -1,0 +1,63 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  title: string;
+  category: string;
+  caption?: string;
+  thumbnail?: ImageMetadata;
+  href: string;
+  isVideo?: boolean;
+}
+
+const { title, category, caption, thumbnail, href, isVideo = false } = Astro.props;
+
+const categoryLabels: Record<string, string> = {
+  graffiti: 'Graffiti',
+  heritage: 'Heritage',
+  'fire-damage': 'Fire Damage',
+  industrial: 'Industrial',
+  'paint-removal': 'Paint Removal',
+};
+---
+
+<a
+  href={href}
+  class="group block bg-surface border border-neutral-mid/10 hover:border-neutral-mid/30 transition-colors"
+>
+  <div class="relative overflow-hidden aspect-[4/3] bg-neutral-light">
+    {thumbnail ? (
+      <Image
+        src={thumbnail}
+        alt={title}
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        loading="lazy"
+        widths={[400, 800]}
+        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+      />
+    ) : (
+      <div class="w-full h-full flex items-center justify-center text-neutral-mid text-sm">
+        No image
+      </div>
+    )}
+
+    <span class="absolute top-2 left-2 bg-neutral-dark/80 text-neutral-light text-xs px-2 py-0.5">
+      {categoryLabels[category] ?? category}
+    </span>
+
+    {isVideo && (
+      <div class="absolute inset-0 flex items-center justify-center" aria-hidden="true">
+        <div class="w-12 h-12 rounded-full bg-surface/90 flex items-center justify-center shadow">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <polygon points="7,4 17,10 7,16" fill="currentColor" class="text-neutral-dark" />
+          </svg>
+        </div>
+      </div>
+    )}
+  </div>
+
+  <div class="p-4">
+    <p class="text-sm font-medium text-on-surface group-hover:text-accent transition-colors">{title}</p>
+    {caption && <p class="text-xs text-neutral-mid mt-1 line-clamp-2">{caption}</p>}
+  </div>
+</a>

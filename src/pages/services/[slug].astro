@@ -1,0 +1,119 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import EnquiryForm from '../../components/EnquiryForm.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { slug: 'graffiti' } },
+    { params: { slug: 'heritage' } },
+    { params: { slug: 'fire-damage' } },
+    { params: { slug: 'industrial' } },
+    { params: { slug: 'paint-removal' } },
+  ];
+}
+
+const { slug } = Astro.params;
+
+const meta: Record<string, { label: string; headline: string; description: string; buyer: string; queryTarget: string }> = {
+  graffiti: {
+    label: 'Graffiti Removal',
+    headline: 'Commercial graffiti removal for councils and public realm',
+    description: 'Specialist laser graffiti removal for councils, public realm, and commercial clients across the UK. Full substrate preservation, no ghosting, complete documentation.',
+    buyer: 'Councils, streetscene and highways teams',
+    queryTarget: 'laser graffiti removal council contractor UK',
+  },
+  heritage: {
+    label: 'Heritage Conservation',
+    headline: 'Non-abrasive laser cleaning for listed buildings and historic stonework',
+    description: 'Laser cleaning for listed buildings, historic stonework, and heritage facades across the UK. Non-abrasive, no moisture, no residue. RAMS and method statements on request.',
+    buyer: 'Conservation architects, heritage trusts, church and listed-building owners',
+    queryTarget: 'laser cleaning listed buildings UK',
+  },
+  'fire-damage': {
+    label: 'Fire Damage Remediation',
+    headline: 'Fire damage remediation — working directly with loss adjusters and insurers',
+    description: 'Laser soot and char removal for insurance-claim remediation across the UK. Full documentation trail, fast mobilisation, working directly with loss adjusters.',
+    buyer: 'Insurers and loss adjusters',
+    queryTarget: 'fire damage laser cleaning soot removal',
+  },
+  industrial: {
+    label: 'Industrial Cleaning',
+    headline: 'Industrial laser cleaning and surface preparation across the UK',
+    description: 'Industrial laser cleaning and surface preparation for facilities managers and principal contractors across the UK. Method statements, RAMS, full compliance documentation.',
+    buyer: 'Facilities managers, principal contractors',
+    queryTarget: 'industrial laser cleaning UK laser surface preparation',
+  },
+  'paint-removal': {
+    label: 'Paint Removal',
+    headline: 'Laser paint stripping — substrate-safe coating removal',
+    description: 'Precision laser paint and coating removal across the UK. Full substrate preservation with before/after evidence on every project.',
+    buyer: 'Commercial clients and contractors',
+    queryTarget: 'laser paint stripping UK laser coating removal',
+  },
+};
+
+const page = meta[slug];
+const allProjects = await getCollection('projects');
+const categoryProjects = allProjects.filter((p) => p.data.category === slug).slice(0, 6);
+---
+
+<Base title={page.label} description={page.description}>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <nav aria-label="Breadcrumb" class="text-sm text-neutral-mid mb-8">
+      <ol class="flex gap-2">
+        <li><a href="/" class="hover:text-neutral-dark transition-colors">Home</a></li>
+        <li aria-hidden="true">›</li>
+        <li><a href="/services/" class="hover:text-neutral-dark transition-colors">Services</a></li>
+        <li aria-hidden="true">›</li>
+        <li aria-current="page" class="text-on-surface">{page.label}</li>
+      </ol>
+    </nav>
+
+    <header class="max-w-3xl mb-14">
+      <p class="text-xs font-medium text-neutral-mid uppercase tracking-widest mb-3">{page.buyer}</p>
+      <h1 class="text-4xl font-semibold text-neutral-dark mb-6">{page.headline}</h1>
+      <p class="text-lg text-neutral-mid">
+        Service introduction copy to follow — covering what the service is, who needs it,
+        and why laser is the right method for this application.
+      </p>
+    </header>
+
+    {/* Project evidence */}
+    <section class="mb-16">
+      <div class="flex items-baseline justify-between mb-6">
+        <h2 class="text-xl font-semibold text-neutral-dark">Project evidence</h2>
+        <a href={`/work/${slug}/`} class="text-sm text-accent hover:underline">
+          See all {page.label.toLowerCase()} projects
+        </a>
+      </div>
+
+      {categoryProjects.length > 0 ? (
+        <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {categoryProjects.map((p) => (
+            <li>
+              <ProjectCard
+                title={p.data.title}
+                category={p.data.category}
+                caption={p.data.caption}
+                href={`/work/${p.data.category}/${p.id}/`}
+                isVideo={!!p.data.videoUrl}
+              />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="text-neutral-mid">Project photography for this service will appear here.</p>
+      )}
+    </section>
+
+    {/* FAQ placeholder */}
+    <section class="mb-16 max-w-2xl">
+      <h2 class="text-xl font-semibold text-neutral-dark mb-6">Frequently asked questions</h2>
+      <p class="text-neutral-mid">Service-specific FAQs to follow.</p>
+    </section>
+  </div>
+
+  <EnquiryForm serviceContext={page.label} />
+</Base>

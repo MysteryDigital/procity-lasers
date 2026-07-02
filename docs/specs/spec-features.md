@@ -13,6 +13,12 @@ contact details. The feature set is deliberately lean.
 
 ## 2. Core Features
 
+### 2.0 Blog
+An SEO and credibility blog is now in scope — see **[spec-blog.md](spec-blog.md)**
+for the full specification. Summary: AI-drafted, human-reviewed articles stored
+as Astro content collections (Markdown in the repo), published via Git, managed
+via Decap CMS as an editorial fallback.
+
 ### 2.1 Work showcase (photo + video gallery)
 The heart of the site — a visual portfolio of completed jobs.
 
@@ -51,7 +57,12 @@ filename stems as a fallback.
 **Open decisions:**
 - **Captions/metadata** — per item: title, location, service type, short
   description? Or captions derived from filenames only?
-- **Video source** — hosting for videos (see Open Questions).
+
+**Resolved:** video is embedded from YouTube or Vimeo (owner pastes the URL
+into the CMS). An optional **thumbnail image upload** field sits alongside
+the video URL field — the owner uploads a still frame; if omitted, a
+YouTube thumbnail is fetched automatically by URL pattern. Vimeo projects
+without a thumbnail upload will show a placeholder until one is provided.
 
 ### 2.2 Media management (self-service)
 The client must be able to **manage the media easily** without a developer.
@@ -98,7 +109,6 @@ Both are wanted.
 Keeping the build lean; not currently required:
 - E-commerce / online payment
 - User accounts / login for visitors
-- Blog / news (candidate for later — see overview)
 - Multi-language
 - Booking/scheduling system
 
@@ -107,7 +117,7 @@ Keeping the build lean; not currently required:
 1. Gallery organisation — filter by service category? Yes/no.
 2. Per-item metadata (title, location, service, description) — how much beyond
    filename-derived captions?
-3. Video: how many, and hosted where (YouTube/Vimeo embed vs. self-hosted)?
+3. Video: how many? (Hosting resolved — YouTube/Vimeo embed with optional thumbnail upload.)
 4. Enquiry form — final field list, and the destination email for submissions.
 5. Pro City Painters — link placement, and whether cross-linking is reciprocal.
 6. Who will manage the media (one owner, or a small team)? Affects the

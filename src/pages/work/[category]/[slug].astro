@@ -1,0 +1,132 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../../../layouts/Base.astro';
+import BeforeAfterSlider from '../../../components/BeforeAfterSlider.astro';
+import ProjectCard from '../../../components/ProjectCard.astro';
+import EnquiryForm from '../../../components/EnquiryForm.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((p) => ({
+    params: { category: p.data.category, slug: p.id },
+    props: { project: p },
+  }));
+}
+
+const { project } = Astro.props;
+const { data } = project;
+
+const categoryLabels: Record<string, string> = {
+  graffiti: 'Graffiti',
+  heritage: 'Heritage',
+  'fire-damage': 'Fire Damage',
+  industrial: 'Industrial',
+  'paint-removal': 'Paint Removal',
+};
+
+const allProjects = await getCollection('projects');
+const related = allProjects
+  .filter((p) => p.data.category === data.category && p.id !== project.id)
+  .slice(0, 3);
+---
+
+<Base
+  title={data.title}
+  description={data.caption ?? `${categoryLabels[data.category]} project by Pro City Laser Removal.`}
+  preloadImage={data.before?.src ?? data.after?.src ?? data.image?.src}
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <nav aria-label="Breadcrumb" class="text-sm text-neutral-mid mb-8">
+      <ol class="flex gap-2">
+        <li><a href="/" class="hover:text-neutral-dark transition-colors">Home</a></li>
+        <li aria-hidden="true">›</li>
+        <li><a href="/work/" class="hover:text-neutral-dark transition-colors">Work</a></li>
+        <li aria-hidden="true">›</li>
+        <li>
+          <a href={`/work/${data.category}/`} class="hover:text-neutral-dark transition-colors">
+            {categoryLabels[data.category]}
+          </a>
+        </li>
+        <li aria-hidden="true">›</li>
+        <li aria-current="page" class="text-on-surface">{data.title}</li>
+      </ol>
+    </nav>
+
+    <h1 class="text-3xl font-semibold text-neutral-dark mb-8 max-w-3xl">{data.title}</h1>
+
+    {/* Primary visual */}
+    <div class="mb-10">
+      {data.before && data.after ? (
+        <BeforeAfterSlider
+          before={data.before}
+          after={data.after}
+          beforeAlt={`${data.title} — before laser cleaning`}
+          afterAlt={`${data.title} — after laser cleaning`}
+          eager={true}
+        />
+      ) : data.videoUrl ? (
+        <div class="aspect-video">
+          <iframe
+            src={data.videoUrl}
+            title={data.title}
+            class="w-full h-full"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+      ) : data.image ? (
+        <Image
+          src={data.image}
+          alt={data.title}
+          class="w-full h-auto"
+          loading="eager"
+          fetchpriority="high"
+          widths={[800, 1200, 1600]}
+          sizes="(min-width: 1280px) 1200px, 100vw"
+        />
+      ) : null}
+    </div>
+
+    {/* Project detail */}
+    {data.caption && (
+      <div class="max-w-2xl mb-12">
+        <p class="text-neutral-mid leading-relaxed">{data.caption}</p>
+      </div>
+    )}
+
+    {/* Related service */}
+    <div class="mb-12 border-t border-neutral-mid/10 pt-8">
+      <p class="text-sm text-neutral-mid">
+        This project was completed under our{' '}
+        <a href={`/services/${data.category}/`} class="text-accent hover:underline">
+          {categoryLabels[data.category]} service
+        </a>.
+      </p>
+    </div>
+
+    {/* Related projects */}
+    {related.length > 0 && (
+      <section>
+        <h2 class="text-xl font-semibold text-neutral-dark mb-6">
+          More {categoryLabels[data.category].toLowerCase()} projects
+        </h2>
+        <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {related.map((p) => (
+            <li>
+              <ProjectCard
+                title={p.data.title}
+                category={p.data.category}
+                caption={p.data.caption}
+                href={`/work/${p.data.category}/${p.id}/`}
+                isVideo={!!p.data.videoUrl}
+              />
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+  </div>
+
+  <EnquiryForm serviceContext={categoryLabels[data.category]} />
+</Base>

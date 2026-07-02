@@ -104,13 +104,43 @@ grime being removed. This contrast is the site's ownable visual story, and it is
 carried by layout and photography, not by decorative graphics.
 
 ### Colour
-- Defined from scratch (no inherited brand colours).
-- Restrained, professional, largely **neutral** palette (charcoal / slate /
-  off-white) so project photography carries the colour.
-- **One controlled accent**, chosen to read as precise and trustworthy — to be
-  set as part of this design work (candidate directions: a technical
-  blue/teal, or a confident safety-adjacent accent). Kept minimal.
+- Restrained, professional, largely **neutral** palette so project photography carries the colour.
+- **One controlled accent** — steel blue `#1c425c`. Precise and trustworthy; used only for CTA buttons, active states, and focus indicators.
 - Monoline single-colour treatment for all line-art.
+- All values are design tokens — see §4a for the confirmed set and contrast table.
+
+### 4a. Confirmed colour tokens
+
+**Status: agreed 2026-07-02.** Source swatch: `#1c425c #41413e #d7d7d7 #8d8d8d`.
+
+| Token | Value | Role |
+|---|---|---|
+| `--color-neutral-dark` | `#41413e` | Warm charcoal — primary text, dark surfaces, footer |
+| `--color-neutral-mid` | `#6b6b6b` | Mid grey — secondary text, borders, dividers |
+| `--color-neutral-light` | `#d7d7d7` | Light grey — dividers, subtle section backgrounds |
+| `--color-accent` | `#1c425c` | Steel blue — CTA buttons, active states, focus indicators |
+| `--color-surface` | `#f6f5f2` | Warm white — page and card backgrounds |
+| `--color-on-surface` | `#41413e` | Primary text on surface |
+
+**Note on neutral-mid:** the swatch value `#8d8d8d` was nudged to `#6b6b6b` — the same grey direction but dark enough to pass WCAG AA 4.5:1 for normal body text. `#8d8d8d` only reaches 3:1 and is restricted to borders and UI components.
+
+**Note on surface:** `#f6f5f2` (warm white) is derived, not in the original swatch. It picks up the warm undertone of `#41413e` and provides the page background the swatch lacked.
+
+#### WCAG 2.1 AA contrast ratios
+
+| Foreground | Background | Ratio | Normal text (4.5:1) | Large text / UI (3:1) |
+|---|---|---|---|---|
+| `#41413e` neutral-dark | `#f6f5f2` surface | **9.4:1** | ✅ | ✅ |
+| `#41413e` neutral-dark | `#d7d7d7` neutral-light | **7.1:1** | ✅ | ✅ |
+| `#6b6b6b` neutral-mid | `#f6f5f2` surface | **4.9:1** | ✅ | ✅ |
+| `#6b6b6b` neutral-mid | `#d7d7d7` neutral-light | **3.7:1** | ❌ | ✅ |
+| `#1c425c` accent | `#f6f5f2` surface | **9.7:1** | ✅ | ✅ |
+| `#1c425c` accent | `#d7d7d7` neutral-light | **7.4:1** | ✅ | ✅ |
+| `#ffffff` white | `#1c425c` accent (button) | **10.6:1** | ✅ | ✅ |
+
+**Combination to avoid:** `neutral-mid` text on `neutral-light` section backgrounds (3.7:1 — large text only). Use `neutral-dark` for any body-size text on `neutral-light` surfaces.
+
+---
 
 ### Photography
 - The hero of the site. High-quality, **real project** imagery only.
@@ -118,8 +148,9 @@ carried by layout and photography, not by decorative graphics.
 - Avoid generic stock wherever real work can be shown.
 
 ### Typography
-- **Geometric / architectural sans throughout** — pairs naturally with the mark
-  and lets the logo carry the personality.
+- **DM Sans** — confirmed by client as the typeface for the site.
+- Geometric / architectural character pairs naturally with the mark and lets the
+  logo carry the personality.
 - Generous sizing and clear hierarchy; many readers skim on desktop.
 - A restrained serif for large headings remains an *optional* heritage nod only.
 
@@ -155,6 +186,8 @@ carried by layout and photography, not by decorative graphics.
 - **Logo:** is the existing isometric mark the website's logo (client to supply
   file), is a refreshed mark being commissioned, or is logo design in scope for
   this project?
-- Accreditations / certifications available to feature (drives the credibility
-  system).
 - Availability and quality of real before/after project imagery.
+
+**Resolved:**
+- ~~Accreditations / certifications~~ — leave out for now; client to supply when available.
+- ~~Colour palette~~ — agreed 2026-07-02; see §4a.

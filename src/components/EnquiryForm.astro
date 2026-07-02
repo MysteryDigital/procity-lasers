@@ -1,0 +1,101 @@
+---
+interface Props {
+  serviceContext?: string;
+}
+const { serviceContext } = Astro.props;
+---
+
+<section class="bg-neutral-light py-16 px-4">
+  <div class="max-w-xl mx-auto">
+    <h2 class="text-2xl font-semibold text-neutral-dark mb-2">Discuss your project</h2>
+    <p class="text-neutral-mid mb-8">
+      {serviceContext
+        ? `Tell us about your ${serviceContext.toLowerCase()} project and we'll get back to you within one working day.`
+        : 'Tell us about your project and we\'ll get back to you within one working day.'}
+    </p>
+
+    <form
+      name="enquiry"
+      method="POST"
+      data-netlify="true"
+      data-netlify-honeypot="bot-field"
+      class="space-y-5"
+    >
+      <input type="hidden" name="form-name" value="enquiry" />
+
+      {/* Honeypot — hidden from real users */}
+      <p class="hidden" aria-hidden="true">
+        <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+      </p>
+
+      <div>
+        <label for="name" class="block text-sm font-medium text-on-surface mb-1">
+          Name <span aria-label="required">*</span>
+        </label>
+        <input
+          id="name"
+          type="text"
+          name="name"
+          required
+          aria-required="true"
+          autocomplete="name"
+          class="w-full border border-neutral-mid/40 bg-surface px-3 py-2 text-sm text-on-surface focus:outline-none focus:border-accent"
+        />
+      </div>
+
+      <div>
+        <label for="organisation" class="block text-sm font-medium text-on-surface mb-1">
+          Company / Organisation
+        </label>
+        <input
+          id="organisation"
+          type="text"
+          name="organisation"
+          autocomplete="organization"
+          class="w-full border border-neutral-mid/40 bg-surface px-3 py-2 text-sm text-on-surface focus:outline-none focus:border-accent"
+        />
+      </div>
+
+      <div>
+        <label for="email" class="block text-sm font-medium text-on-surface mb-1">
+          Email <span aria-label="required">*</span>
+        </label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          required
+          aria-required="true"
+          autocomplete="email"
+          class="w-full border border-neutral-mid/40 bg-surface px-3 py-2 text-sm text-on-surface focus:outline-none focus:border-accent"
+        />
+      </div>
+
+      <div>
+        <label for="message" class="block text-sm font-medium text-on-surface mb-1">
+          Brief project description <span aria-label="required">*</span>
+        </label>
+        <textarea
+          id="message"
+          name="message"
+          rows={4}
+          required
+          aria-required="true"
+          class="w-full border border-neutral-mid/40 bg-surface px-3 py-2 text-sm text-on-surface focus:outline-none focus:border-accent resize-y"
+        ></textarea>
+      </div>
+
+      <button
+        type="submit"
+        class="w-full bg-accent text-surface py-3 text-sm font-medium hover:opacity-90 transition-opacity"
+      >
+        Send enquiry
+      </button>
+
+      <p class="text-xs text-neutral-mid text-center">
+        Prefer to call?
+        <a href="tel:+447878261529" class="text-accent hover:underline">07878 261529</a>
+      </p>
+    </form>
+  </div>
+</section>

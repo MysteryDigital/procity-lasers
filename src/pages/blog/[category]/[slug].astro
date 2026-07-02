@@ -1,0 +1,226 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../../../layouts/Base.astro';
+import EnquiryForm from '../../../components/EnquiryForm.astro';
+import ArticleCta from '../../../components/ArticleCta.astro';
+import AuthorBio from '../../../components/AuthorBio.astro';
+import BlogCard from '../../../components/BlogCard.astro';
+import { readingTime } from '../../../lib/readingTime';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { category: post.data.category, slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+const { data } = post;
+
+const categoryLabels: Record<string, string> = {
+  graffiti:       'Graffiti',
+  heritage:       'Heritage Conservation',
+  'fire-damage':  'Fire Damage',
+  industrial:     'Industrial',
+  'paint-removal':'Paint Removal',
+};
+
+// Auto-select a hero image from project photography when no coverImage is set.
+// Prefers the "after" result shot, then thumbnail, then standalone image.
+// Selection is deterministic by article slug so the same post always gets the
+// same photo and rebuilds don't shuffle things around.
+const allProjects = await getCollection('projects');
+const categoryProjects = allProjects.filter(
+  (p) => p.data.category === data.category && (p.data.after ?? p.data.thumbnail ?? p.data.image)
+);
+const heroImage = (() => {
+  if (data.coverImage) return { src: data.coverImage, alt: data.title };
+  if (categoryProjects.length === 0) return null;
+  const hash = post.slug.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+  const picked = categoryProjects[hash % categoryProjects.length];
+  const src = picked.data.after ?? picked.data.thumbnail ?? picked.data.image;
+  const alt = picked.data.caption ?? picked.data.title;
+  return src ? { src, alt } : null;
+})();
+
+const label = categoryLabels[data.category] ?? data.category;
+const mins  = readingTime(post.body);
+
+const displayDate = (data.updatedDate ?? data.publishDate).toLocaleDateString('en-GB', {
+  day: 'numeric', month: 'long', year: 'numeric',
+});
+const isoDate = (data.updatedDate ?? data.publishDate).toISOString();
+
+// Related posts: same category, excluding this article, most recent first
+const allPosts = await getCollection('blog', ({ data: d }) => !d.draft);
+const related  = allPosts
+  .filter((p) => p.slug !== post.slug && p.data.category === data.category)
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
+  .slice(0, 3);
+---
+
+<Base
+  title={data.title}
+  description={data.description}
+  preloadImage={heroImage?.src.src}
+>
+
+  {/* ── BREADCRUMB + ARTICLE HEADER ── */}
+  <section class="bg-surface pt-14 pb-0">
+    <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-12">
+
+      {/* Breadcrumb */}
+      <nav aria-label="Breadcrumb" class="mb-10">
+        <ol class="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11.5px] text-neutral-mid">
+          <li><a href="/" class="hover:text-neutral-dark transition-colors">Home</a></li>
+          <li aria-hidden="true" class="text-neutral-mid/50">›</li>
+          <li><a href="/blog/" class="hover:text-neutral-dark transition-colors">Blog</a></li>
+          <li aria-hidden="true" class="text-neutral-mid/50">›</li>
+          <li>
+            <a href={`/blog/${data.category}/`} class="hover:text-neutral-dark transition-colors">
+              {label}
+            </a>
+          </li>
+          <li aria-hidden="true" class="text-neutral-mid/50">›</li>
+          <li aria-current="page" class="text-neutral-dark truncate max-w-[180px] sm:max-w-xs">{data.title}</li>
+        </ol>
+      </nav>
+
+      {/* Two-column layout: article + sticky sidebar */}
+      <div class="lg:grid lg:grid-cols-[minmax(0,1fr)_272px] lg:gap-16 items-start">
+
+        {/* ── MAIN ARTICLE COLUMN ── */}
+        <article>
+
+          {/* Byline row */}
+          <div class="flex flex-wrap items-center gap-x-5 gap-y-1 mb-6">
+            <div class="flex items-center gap-2">
+              <span class="text-[9px] font-semibold tracking-[0.14em] uppercase text-neutral-mid">Category</span>
+              <a
+                href={`/blog/${data.category}/`}
+                class="text-[9px] font-semibold tracking-[0.14em] uppercase text-accent hover:opacity-80 transition-opacity"
+              >
+                {label}
+              </a>
+            </div>
+            <div class="w-px h-3 bg-neutral-light" aria-hidden="true"></div>
+            <div class="flex items-center gap-2">
+              <span class="text-[9px] font-semibold tracking-[0.14em] uppercase text-neutral-mid">Reading time</span>
+              <span class="text-[9px] tracking-[0.08em] text-neutral-dark">{mins} min</span>
+            </div>
+            <div class="w-px h-3 bg-neutral-light" aria-hidden="true"></div>
+            <div class="flex items-center gap-2">
+              <span class="text-[9px] font-semibold tracking-[0.14em] uppercase text-neutral-mid">Updated</span>
+              <time datetime={isoDate} class="text-[9px] tracking-[0.08em] text-neutral-dark">{displayDate}</time>
+            </div>
+          </div>
+
+          {/* H1 */}
+          <h1 class="text-[clamp(28px,4vw,44px)] font-light text-neutral-dark tracking-[-0.025em] leading-[1.1] mb-5">
+            {data.title}
+          </h1>
+
+          {/* Lead paragraph */}
+          {data.description && (
+            <p class="text-[18px] leading-[1.7] text-neutral-mid mb-10 font-light">
+              {data.description}
+            </p>
+          )}
+
+          {/* Hero image — coverImage takes priority; falls back to a category-matched
+              project photo; omitted entirely when neither is available. */}
+          {heroImage && (
+            <div class="mb-10 aspect-[16/9] overflow-hidden">
+              <Image
+                src={heroImage.src}
+                alt={heroImage.alt}
+                class="w-full h-full object-cover"
+                loading="eager"
+                fetchpriority="high"
+                widths={[800, 1200, 1600]}
+                sizes="(min-width: 1200px) 800px, (min-width: 768px) calc(100vw - 6rem), 100vw"
+              />
+            </div>
+          )}
+
+          {/* ── ARTICLE BODY ── */}
+          {/* The rehype plugin inserts <div id="mid-cta-slot"> at ~40% of this content.
+              The inline script below relocates #mid-article-cta into that slot. */}
+          <div class="article-prose">
+            <Content />
+          </div>
+
+          {/* Mid-article CTA — default position (after body).
+              Moved into #mid-cta-slot by the inline script if JS is available.
+              On mobile, this is the primary conversion prompt. */}
+          <div id="mid-article-cta">
+            <ArticleCta category={data.category} variant="inline" />
+          </div>
+
+          {/* Related articles */}
+          {related.length > 0 && (
+            <section class="mt-14 pt-8 border-t border-neutral-light" aria-label="Related articles">
+              <div class="flex items-center gap-3 mb-5">
+                <div class="w-5 h-px bg-neutral-mid" aria-hidden="true"></div>
+                <span class="text-[9px] font-medium tracking-[0.18em] text-neutral-mid uppercase">Related articles</span>
+              </div>
+              <ul class="space-y-4">
+                {related.map((p) => (
+                  <li>
+                    <a href={`/blog/${p.data.category}/${p.slug}/`} class="group flex items-start gap-3">
+                      <svg class="flex-shrink-0 mt-1 text-neutral-mid group-hover:text-accent transition-colors" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                        <path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span class="text-[14px] text-neutral-dark group-hover:text-accent transition-colors leading-[1.45]">
+                        {p.data.title}
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {/* Author bio */}
+          <AuthorBio
+            author={data.author}
+            updatedDate={data.updatedDate}
+          />
+
+        </article>
+
+        {/* ── STICKY SIDEBAR (desktop only) ── */}
+        <aside class="hidden lg:block" aria-label="Further reading and contact">
+          <div class="sticky top-24">
+            <ArticleCta category={data.category} variant="inline" />
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </section>
+
+
+  {/* ── END-OF-ARTICLE CTA (full bleed) ── */}
+  <ArticleCta category={data.category} variant="end" />
+
+
+  {/* ── ENQUIRY FORM ── */}
+  <EnquiryForm serviceContext={label} />
+
+</Base>
+
+{/* ── Mid-article CTA relocation script ──
+    Moves #mid-article-cta into the rehype-injected #mid-cta-slot at ~40% of the
+    article body. If the slot is absent (very short articles) or JS is disabled,
+    the CTA stays in its default position after the body — still visible.        */}
+<script>
+  const slot = document.getElementById('mid-cta-slot');
+  const cta  = document.getElementById('mid-article-cta');
+  if (slot && cta && slot.parentNode) {
+    slot.parentNode.replaceChild(cta, slot);
+  }
+</script>

@@ -1,0 +1,105 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { category: 'graffiti' } },
+    { params: { category: 'heritage' } },
+    { params: { category: 'fire-damage' } },
+    { params: { category: 'industrial' } },
+    { params: { category: 'paint-removal' } },
+  ];
+}
+
+const { category } = Astro.params;
+
+const categoryLabels: Record<string, string> = {
+  graffiti: 'Graffiti',
+  heritage: 'Heritage',
+  'fire-damage': 'Fire Damage',
+  industrial: 'Industrial',
+  'paint-removal': 'Paint Removal',
+};
+
+const label = categoryLabels[category];
+const allProjects = await getCollection('projects');
+const projects = allProjects.filter((p) => p.data.category === category);
+
+const allCategories = [
+  { slug: 'graffiti', label: 'Graffiti' },
+  { slug: 'heritage', label: 'Heritage' },
+  { slug: 'fire-damage', label: 'Fire Damage' },
+  { slug: 'industrial', label: 'Industrial' },
+  { slug: 'paint-removal', label: 'Paint Removal' },
+];
+---
+
+<Base
+  title={`${label} Projects`}
+  description={`Before-and-after ${label.toLowerCase()} project photography from Pro City Laser Removal. UK nationwide.`}
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <nav aria-label="Breadcrumb" class="text-sm text-neutral-mid mb-8">
+      <ol class="flex gap-2">
+        <li><a href="/" class="hover:text-neutral-dark transition-colors">Home</a></li>
+        <li aria-hidden="true">›</li>
+        <li><a href="/work/" class="hover:text-neutral-dark transition-colors">Work</a></li>
+        <li aria-hidden="true">›</li>
+        <li aria-current="page" class="text-on-surface">{label}</li>
+      </ol>
+    </nav>
+
+    <header class="max-w-2xl mb-10">
+      <h1 class="text-4xl font-semibold text-neutral-dark mb-3">{label} Projects</h1>
+    </header>
+
+    <nav aria-label="Filter projects by category" class="mb-10">
+      <ul class="flex flex-wrap gap-2">
+        <li>
+          <a
+            href="/work/"
+            class="inline-block px-4 py-2 text-sm border border-neutral-mid/30 text-neutral-mid hover:border-accent hover:text-accent transition-colors"
+          >
+            All
+          </a>
+        </li>
+        {allCategories.map((c) => (
+          <li>
+            <a
+              href={`/work/${c.slug}/`}
+              class:list={[
+                'inline-block px-4 py-2 text-sm border transition-colors',
+                c.slug === category
+                  ? 'border-accent bg-accent text-surface'
+                  : 'border-neutral-mid/30 text-neutral-mid hover:border-accent hover:text-accent',
+              ]}
+              aria-current={c.slug === category ? 'page' : undefined}
+            >
+              {c.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    {projects.length > 0 ? (
+      <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {projects.map((p) => (
+          <li>
+            <ProjectCard
+              title={p.data.title}
+              category={p.data.category}
+              caption={p.data.caption}
+              href={`/work/${p.data.category}/${p.id}/`}
+              isVideo={!!p.data.videoUrl}
+            />
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p class="text-neutral-mid">{label} project photography will appear here.</p>
+    )}
+  </div>
+</Base>

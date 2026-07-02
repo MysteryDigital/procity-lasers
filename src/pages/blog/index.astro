@@ -1,0 +1,132 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import { readingTime } from '../../lib/readingTime';
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+allPosts.sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+
+const featuredPosts = allPosts.filter((p) => p.data.featured).slice(0, 3);
+
+const categories = [
+  { slug: 'graffiti',       label: 'Graffiti' },
+  { slug: 'heritage',       label: 'Heritage' },
+  { slug: 'fire-damage',    label: 'Fire Damage' },
+  { slug: 'industrial',     label: 'Industrial' },
+  { slug: 'paint-removal',  label: 'Paint Removal' },
+];
+---
+
+<Base
+  title="Laser Cleaning Resources & Case Studies | Pro City Laser Removal"
+  description="Articles on commercial laser cleaning — graffiti removal, heritage conservation, fire damage remediation. Written for councils, contractors, and heritage professionals."
+>
+
+  {/* ── PAGE HEADER ── */}
+  <section class="bg-surface pt-16 pb-12">
+    <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-12">
+      <div class="flex items-center gap-3 mb-3.5">
+        <div class="w-6 h-px bg-neutral-mid" aria-hidden="true"></div>
+        <span class="text-[10px] font-medium tracking-[0.18em] text-neutral-mid uppercase">Laser Cleaning Resources</span>
+      </div>
+      <div class="max-w-2xl">
+        <h1 class="text-[clamp(32px,4vw,44px)] font-light text-neutral-dark tracking-[-0.02em] leading-[1.1] mb-4">
+          Guides, case studies, and technical articles
+        </h1>
+        <p class="text-[16px] leading-[1.72] text-neutral-mid">
+          In-depth articles on laser cleaning for councils, heritage bodies, insurers, and contractors. Covering graffiti removal, heritage stonework, fire damage remediation, industrial cleaning, and paint stripping.
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+  {/* ── FEATURED POSTS ── (only rendered when posts have featured: true) */}
+  {featuredPosts.length > 0 && (
+    <section class="relative overflow-hidden bg-accent py-14" aria-label="Featured articles">
+      <div class="bg-grid-overlay absolute inset-0 pointer-events-none" aria-hidden="true"></div>
+      <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-12 relative">
+        <div class="flex items-center gap-3 mb-3.5">
+          <div class="w-5 h-px bg-surface/30" aria-hidden="true"></div>
+          <span class="text-[10px] font-medium tracking-[0.18em] text-surface/65 uppercase">Featured</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-surface/8 border border-surface/10">
+          {featuredPosts.map((post) => (
+            <div class="bg-accent/60">
+              <a
+                href={`/blog/${post.data.category}/${post.slug}/`}
+                class="group block px-6 py-6 h-full hover:bg-surface/5 transition-colors"
+              >
+                <div class="text-[9px] font-semibold tracking-[0.14em] uppercase text-surface/70 mb-3">{post.data.category.replace('-', ' ')}</div>
+                <h2 class="text-[16px] font-light text-surface leading-[1.45] tracking-[-0.01em] group-hover:text-surface/85 transition-colors mb-3">
+                  {post.data.title}
+                </h2>
+                <p class="text-[13px] text-surface/55 leading-[1.6] line-clamp-2 mb-4">{post.data.description}</p>
+                <div class="flex items-center gap-1.5 text-[12px] font-medium text-surface/60 tracking-[0.02em]">
+                  <span>Read article</span>
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+
+  {/* ── CATEGORY FILTER ── */}
+  <section class="bg-surface border-b border-neutral-light">
+    <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-12">
+      <nav aria-label="Filter articles by category">
+        <ul class="flex flex-wrap gap-0 -mb-px" role="list">
+          <li>
+            <a
+              href="/blog/"
+              class="inline-block px-5 py-3.5 text-[11.5px] font-medium tracking-[0.06em] border-b-2 border-accent text-accent"
+              aria-current="page"
+            >
+              All
+            </a>
+          </li>
+          {categories.map((c) => (
+            <li>
+              <a
+                href={`/blog/${c.slug}/`}
+                class="inline-block px-5 py-3.5 text-[11.5px] font-medium tracking-[0.06em] text-neutral-mid border-b-2 border-transparent hover:text-neutral-dark hover:border-neutral-mid transition-colors"
+              >
+                {c.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+  </section>
+
+
+  {/* ── ARTICLE GRID ── */}
+  <section class="bg-surface py-14">
+    <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-12">
+      {allPosts.length > 0 ? (
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-neutral-light border border-neutral-light">
+          {allPosts.map((post) => (
+            <BlogCard
+              title={post.data.title}
+              category={post.data.category}
+              slug={post.slug}
+              description={post.data.description}
+              coverImage={post.data.coverImage}
+              publishDate={post.data.publishDate}
+              readingTime={readingTime(post.body)}
+            />
+          ))}
+        </div>
+      ) : (
+        <p class="text-neutral-mid text-[15px]">Articles will appear here once published.</p>
+      )}
+    </div>
+  </section>
+
+</Base>

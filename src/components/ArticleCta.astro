@@ -1,0 +1,104 @@
+---
+/**
+ * Category-specific editorial CTA block.
+ *
+ * variant="inline"  — compact dark callout within the article flow (Position 1 & 3)
+ * variant="end"     — full-bleed dark band after the article body (Position 2)
+ *
+ * All variants drive to the same single offer per category (spec-blog §5).
+ */
+
+interface Props {
+  category: string;
+  variant: 'inline' | 'end';
+}
+
+const { category, variant } = Astro.props;
+
+const ctas: Record<string, { eyebrow: string; copy: string; cta: string; dest: string }> = {
+  heritage: {
+    eyebrow: 'Heritage Conservation',
+    copy:    'See our listed-building and conservation work',
+    cta:     'View heritage projects',
+    dest:    '/services/heritage/',
+  },
+  graffiti: {
+    eyebrow: 'Graffiti Removal',
+    copy:    'View commercial graffiti removal case studies',
+    cta:     'See graffiti work',
+    dest:    '/services/graffiti/',
+  },
+  'fire-damage': {
+    eyebrow: 'Fire Damage Remediation',
+    copy:    'We work directly with loss adjusters — get in touch',
+    cta:     'Get in touch',
+    dest:    '/contact/',
+  },
+  industrial: {
+    eyebrow: 'Industrial Cleaning',
+    copy:    'Request a method statement for your project',
+    cta:     'Discuss your project',
+    dest:    '/contact/',
+  },
+  'paint-removal': {
+    eyebrow: 'Paint Removal',
+    copy:    'See our paint stripping portfolio',
+    cta:     'View paint removal work',
+    dest:    '/services/paint-removal/',
+  },
+};
+
+const c = ctas[category] ?? {
+  eyebrow: 'Get in touch',
+  copy:    'Discuss your project with our team',
+  cta:     'Get in touch',
+  dest:    '/contact/',
+};
+---
+
+{variant === 'inline' ? (
+  /* ── Compact inline callout ── */
+  <div class="relative overflow-hidden bg-accent px-7 py-6 my-10">
+    <div class="bg-grid-overlay absolute inset-0 pointer-events-none" aria-hidden="true"></div>
+    <div class="relative">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-5 h-px bg-surface/30" aria-hidden="true"></div>
+        <span class="text-[9px] font-medium tracking-[0.18em] text-surface/60 uppercase">{c.eyebrow}</span>
+      </div>
+      <p class="text-[15.5px] font-light text-surface leading-[1.55] mb-4 tracking-[-0.01em]">
+        {c.copy}
+      </p>
+      <a
+        href={c.dest}
+        class="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-surface/80 hover:text-surface transition-colors tracking-[0.02em]"
+      >
+        <span>{c.cta}</span>
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+) : (
+  /* ── Full-bleed end-of-article CTA band ── */
+  <section class="relative overflow-hidden bg-accent py-20" aria-label="Call to action">
+    <div class="bg-grid-overlay absolute inset-0 pointer-events-none" aria-hidden="true"></div>
+    <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-12 relative">
+      <div class="max-w-2xl">
+        <div class="flex items-center gap-3 mb-3.5">
+          <div class="w-6 h-px bg-surface/30" aria-hidden="true"></div>
+          <span class="text-[10px] font-medium tracking-[0.18em] text-surface/65 uppercase">{c.eyebrow}</span>
+        </div>
+        <h2 class="m-0 mb-6 text-[clamp(26px,3.5vw,38px)] font-light text-surface tracking-[-0.02em] leading-[1.15]">
+          {c.copy}
+        </h2>
+        <a
+          href={c.dest}
+          class="inline-flex items-center h-12 px-8 bg-surface text-accent text-[14px] font-medium tracking-[0.025em] hover:bg-surface/90 transition-colors"
+        >
+          {c.cta}
+        </a>
+      </div>
+    </div>
+  </section>
+)}

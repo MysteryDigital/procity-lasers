@@ -1,0 +1,84 @@
+---
+/**
+ * Author bio block at the foot of blog articles.
+ * Falls back gracefully when the byline is the default company name rather than
+ * a named individual. The named-individual path is ready for when real author
+ * profiles are added (spec-blog §8 / E-E-A-T requirement).
+ */
+
+interface Props {
+  author: string;
+  updatedDate?: Date;
+  authorUrl?: string;
+}
+
+const { author, updatedDate, authorUrl } = Astro.props;
+
+const isGeneric = author === 'Pro City Laser Removal';
+---
+
+<section class="border-t border-neutral-light pt-8 mt-12" aria-label="About the author">
+
+  <div class="flex items-center gap-3 mb-5">
+    <div class="w-5 h-px bg-neutral-mid" aria-hidden="true"></div>
+    <span class="text-[9px] font-medium tracking-[0.18em] text-neutral-mid uppercase">
+      {isGeneric ? 'About this article' : 'Written by'}
+    </span>
+  </div>
+
+  <div class="flex items-start gap-5">
+
+    {/* Avatar placeholder — replaced with real headshot when author profiles exist */}
+    <div
+      class="flex-shrink-0 w-12 h-12 bg-neutral-light border border-neutral-mid/15 flex items-center justify-center"
+      aria-hidden="true"
+    >
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" class="text-neutral-mid">
+        <circle cx="10" cy="7" r="3.5" stroke="currentColor" stroke-width="1"/>
+        <path d="M3 17c0-3.866 3.134-7 7-7s7 3.134 7 7" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <div class="min-w-0">
+      {isGeneric ? (
+        <>
+          <div class="text-[14.5px] font-medium text-neutral-dark tracking-[-0.01em] mb-1">
+            Pro City Laser Removal
+          </div>
+          <p class="text-[13px] text-neutral-mid leading-[1.6]">
+            Written with AI assistance. Reviewed and edited by the Pro City Laser Removal team. All technical claims are checked against current British Standards and conservation guidance.
+          </p>
+        </>
+      ) : (
+        <>
+          {authorUrl ? (
+            <a
+              href={authorUrl}
+              class="text-[14.5px] font-medium text-neutral-dark tracking-[-0.01em] hover:text-accent transition-colors mb-1 block"
+            >
+              {author}
+            </a>
+          ) : (
+            <div class="text-[14.5px] font-medium text-neutral-dark tracking-[-0.01em] mb-1">
+              {author}
+            </div>
+          )}
+          <p class="text-[13px] text-neutral-mid leading-[1.6]">
+            Written with AI assistance. Reviewed and edited by {author}.
+          </p>
+        </>
+      )}
+
+      {updatedDate && (
+        <p class="text-[11.5px] text-neutral-mid mt-2">
+          Last updated:{' '}
+          <time datetime={updatedDate.toISOString()}>
+            {updatedDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+          </time>
+        </p>
+      )}
+    </div>
+
+  </div>
+
+</section>

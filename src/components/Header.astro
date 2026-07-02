@@ -1,0 +1,116 @@
+---
+import Logo from './Logo.astro';
+
+interface Props {
+  transparent?: boolean;
+}
+const { transparent = false } = Astro.props;
+
+const pathname = Astro.url.pathname;
+---
+
+<header
+  id="site-header"
+  data-transparent={transparent || undefined}
+  class:list={[
+    'z-50 h-16 border-b transition-colors duration-300',
+    transparent
+      ? 'fixed top-0 left-0 right-0 bg-transparent border-transparent'
+      : 'bg-surface border-neutral-mid/20',
+  ]}
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+    <div class="flex items-center justify-between h-full">
+
+      <a
+        href="/"
+        class:list={[
+          'flex items-center gap-3 hover:opacity-80 transition-opacity',
+          transparent ? 'text-surface' : 'text-neutral-dark',
+        ]}
+        aria-label="Pro City Laser Removal — home"
+      >
+        <Logo class="h-9 w-9 flex-shrink-0" />
+        <div>
+          <div class:list={[
+            'text-[13px] font-medium leading-[1.2] tracking-[0.01em]',
+            transparent ? 'text-surface' : 'text-neutral-dark',
+          ]}>Pro City</div>
+          <div class:list={[
+            'text-[9.5px] font-normal uppercase tracking-[0.11em] leading-[1.2]',
+            transparent ? 'text-surface/60' : 'text-neutral-mid',
+          ]}>Laser Removal</div>
+        </div>
+      </a>
+
+      <nav aria-label="Main navigation">
+        <ul class="hidden md:flex items-center gap-9">
+          {[
+            { label: 'Services', href: '/services/' },
+            { label: 'Work', href: '/work/' },
+            { label: 'About', href: '/about/' },
+          ].map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class:list={[
+                  'text-[13.5px] transition-colors tracking-[0.01em]',
+                  transparent
+                    ? 'text-surface/60 hover:text-surface'
+                    : 'text-neutral-mid hover:text-neutral-dark',
+                  !transparent && pathname.startsWith(link.href) && 'text-accent font-medium',
+                ]}
+                aria-current={pathname.startsWith(link.href) ? 'page' : undefined}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+
+          <li>
+            <a
+              href="/contact/"
+              class:list={[
+                'inline-flex items-center px-5 h-9 border text-[13px] font-medium tracking-[0.025em] transition-colors',
+                transparent
+                  ? 'border-surface/38 text-surface hover:border-surface/70'
+                  : 'border-neutral-mid/40 bg-accent text-surface hover:opacity-90',
+              ]}
+            >
+              Get in touch
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      {/* Mobile — tap-to-call */}
+      <a
+        href="tel:+447878261529"
+        class:list={[
+          'md:hidden text-sm font-medium',
+          transparent ? 'text-surface/80' : 'text-accent',
+        ]}
+        aria-label="Call Pro City Laser Removal"
+      >
+        Call us
+      </a>
+    </div>
+  </div>
+</header>
+
+{transparent && (
+  <script>
+    const hdr = document.getElementById('site-header');
+    if (hdr) {
+      const onScroll = () => {
+        if (window.scrollY > 60) {
+          hdr.setAttribute('data-scrolled', '');
+        } else {
+          hdr.removeAttribute('data-scrolled');
+        }
+      };
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+    }
+  </script>
+)}

@@ -1,0 +1,85 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: src/assets/images/uploads
+public_folder: /src/assets/images/uploads
+
+site_url: https://www.procitylasers.com
+display_url: https://www.procitylasers.com
+
+collections:
+  - name: projects
+    label: Projects
+    label_singular: Project
+    folder: src/content/projects
+    create: true
+    extension: json
+    format: json
+    identifier_field: title
+    slug: "{{slug}}"
+    fields:
+      - { label: Title, name: title, widget: string }
+      - label: Category
+        name: category
+        widget: select
+        options:
+          - { label: Graffiti Removal, value: graffiti }
+          - { label: Heritage Conservation, value: heritage }
+          - { label: Fire Damage, value: fire-damage }
+          - { label: Industrial Cleaning, value: industrial }
+          - { label: Paint Removal, value: paint-removal }
+      - { label: Caption, name: caption, widget: text, required: false }
+      - label: Standalone image
+        name: image
+        widget: image
+        required: false
+        hint: "Use this OR the Before/After fields below — not both."
+      - label: Before image
+        name: before
+        widget: image
+        required: false
+        hint: "Must be paired with an After image."
+      - label: After image
+        name: after
+        widget: image
+        required: false
+        hint: "Must be paired with a Before image."
+      - label: Video URL
+        name: videoUrl
+        widget: string
+        required: false
+        hint: "YouTube or Vimeo URL. If provided, a video embed will be shown instead of an image."
+      - label: Video thumbnail
+        name: thumbnail
+        widget: image
+        required: false
+        hint: "Optional still frame for video gallery cards. YouTube thumbnails are fetched automatically if omitted; Vimeo will show a placeholder."
+
+  - name: blog
+    label: Blog posts
+    label_singular: Blog post
+    folder: src/content/blog
+    create: true
+    extension: md
+    format: frontmatter
+    identifier_field: title
+    slug: "{{category}}/{{slug}}"
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Description, name: description, widget: text }
+      - { label: Publish date, name: publishDate, widget: datetime }
+      - { label: Updated date, name: updatedDate, widget: datetime, required: false }
+      - { label: Author, name: author, widget: string, default: "Pro City Laser Removal" }
+      - label: Category
+        name: category
+        widget: select
+        options:
+          - { label: Graffiti, value: graffiti }
+          - { label: Heritage, value: heritage }
+          - { label: Fire Damage, value: fire-damage }
+          - { label: Industrial, value: industrial }
+          - { label: Paint Removal, value: paint-removal }
+      - { label: Cover image, name: coverImage, widget: image, required: false }
+      - { label: Draft, name: draft, widget: boolean, default: true }
+      - { label: Body, name: body, widget: markdown }
