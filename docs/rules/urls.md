@@ -54,7 +54,7 @@ Sitemap: https://www.procitylasers.com/sitemap-index.xml
 
 ```
 /
-/services/[slug]/           graffiti | heritage | fire-damage | industrial | paint-removal
+/services/[slug]/           graffiti | heritage | fire-damage | industrial | paint-removal | surface-preparation
 /work/
 /work/[category]/           same slugs as services
 /work/[category]/[slug]/    individual project pages  (note: NOT /work/[slug]/)

@@ -10,6 +10,7 @@ export function getStaticPaths() {
     { params: { category: 'fire-damage' } },
     { params: { category: 'industrial' } },
     { params: { category: 'paint-removal' } },
+    { params: { category: 'surface-preparation' } },
   ];
 }
 
@@ -21,6 +22,7 @@ const categoryLabels: Record<string, string> = {
   'fire-damage': 'Fire Damage',
   industrial: 'Industrial',
   'paint-removal': 'Paint Removal',
+  'surface-preparation': 'Surface Preparation',
 };
 
 const label = categoryLabels[category];
@@ -33,6 +35,7 @@ const allCategories = [
   { slug: 'fire-damage', label: 'Fire Damage' },
   { slug: 'industrial', label: 'Industrial' },
   { slug: 'paint-removal', label: 'Paint Removal' },
+  { slug: 'surface-preparation', label: 'Surface Preparation' },
 ];
 ---
 

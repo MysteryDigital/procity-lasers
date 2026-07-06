@@ -11,6 +11,7 @@ export function getStaticPaths() {
     { params: { slug: 'fire-damage' } },
     { params: { slug: 'industrial' } },
     { params: { slug: 'paint-removal' } },
+    { params: { slug: 'surface-preparation' } },
   ];
 }
 
@@ -51,6 +52,13 @@ const meta: Record<string, { label: string; headline: string; description: strin
     description: 'Precision laser paint and coating removal across the UK. Full substrate preservation with before/after evidence on every project.',
     buyer: 'Commercial clients and contractors',
     queryTarget: 'laser paint stripping UK laser coating removal',
+  },
+  'surface-preparation': {
+    label: 'Surface Preparation',
+    headline: 'Precision surface profiling and pre-treatment across the UK',
+    description: 'Non-abrasive laser surface preparation for stone, brick, metal and concrete ahead of re-rendering and coating application. UK nationwide.',
+    buyer: 'Contractors and restoration specialists',
+    queryTarget: 'laser surface preparation UK',
   },
 };
 

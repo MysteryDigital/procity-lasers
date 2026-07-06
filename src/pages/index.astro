@@ -2,12 +2,12 @@
 import Base from '../layouts/Base.astro';
 
 const services = [
-  { num: '01', slug: 'graffiti',      name: 'Graffiti Removal',        desc: 'Precision removal from listed stonework, brick, and public realm — no abrasion, no chemical residue, no substrate damage.' },
-  { num: '02', slug: 'heritage',      name: 'Heritage Conservation',    desc: 'Non-invasive laser cleaning for Grade I and II* listed buildings, approved by conservation officers and heritage bodies.' },
-  { num: '03', slug: 'fire-damage',   name: 'Fire Damage Remediation',  desc: 'Soot and char removal from structural surfaces, working directly with loss adjusters and insurers.' },
-  { num: '04', slug: 'industrial',    name: 'Industrial Cleaning',      desc: 'Surface preparation and precision cleaning for steel, concrete, and industrial structures at scale.' },
-  { num: '05', slug: 'paint-removal', name: 'Paint Removal',            desc: 'Complete coating removal with full substrate preservation — paint, anti-climb, and specialist coatings.' },
-  { num: '06', slug: null,            name: 'Surface Preparation',      desc: 'Pre-treatment surface profiling for re-rendering, coating application, and structural repair work.' },
+  { num: '01', slug: 'graffiti',           name: 'Graffiti Removal',         desc: 'Precision graffiti removal from stonework, brick, render, metal and public realm surfaces - heritage or modern. No abrasion, no chemicals, no residue, no substrate damage.' },
+  { num: '02', slug: 'heritage',           name: 'Heritage Conservation',    desc: 'Non-invasive laser cleaning for Grade 1 and Grade 2 listed buildings using methods recognised by conservation professionals and aligned with heritage best practise.' },
+  { num: '03', slug: 'fire-damage',        name: 'Fire Damage Remediation',  desc: 'Removal from stone, brick, timber, metal and masonry surfaces - working directly with Loss Adjusters, Insurers and Restoration Contractors.' },
+  { num: '04', slug: 'industrial',         name: 'Industrial Cleaning',      desc: 'Surface preparation and precision cleaning for steel, concrete, machinery and industrial structures - at scale, with no abrasive media or secondary waste.' },
+  { num: '05', slug: 'paint-removal',      name: 'Paint Removal',            desc: 'Complete coating removal from stone, brick, metal, timber and render – paint, varnish and specialist finishes - with full substrate preservation.' },
+  { num: '06', slug: 'surface-preparation', name: 'Surface Preparation',     desc: 'Precision surface profiling and pre-treatment for re-rendering, coating application and structural repair - on stone, brick, metal and concrete with no substrate damage.' },
 ];
 
 const steps = [
@@ -24,15 +24,15 @@ const stats = [
 ];
 
 const placeholderProjects = [
-  { category: 'Heritage Conservation', title: 'Grade II* Church, East Midlands',     desc: 'Sandstone façade — graffiti and biological staining' },
-  { category: 'Public Realm',          title: 'Metropolitan Underpass, London',       desc: 'Concrete infrastructure — repeat graffiti removal' },
+  { category: 'Heritage Conservation', title: 'Peterborough Cathedral',               desc: 'Graffiti removal from historic stonework — before and after images to follow' },
   { category: 'Fire Damage',           title: 'Commercial Premises, Manchester',      desc: 'Brick — soot and char remediation' },
+  { category: 'Industrial',            title: 'UK Holiday Village Metalwork',         desc: 'Rust removal, prep and paint on outdoor metalwork' },
 ];
 ---
 
 <Base
-  title="Pro City Laser Removal"
-  description="UK-wide specialist laser cleaning — graffiti, heritage stonework, fire damage, industrial, and paint removal. Photo evidence on every project."
+  title="Pro City Laser Removal and Restoration"
+  description="UK-wide specialist laser cleaning — graffiti, heritage, fire damage, industrial, paint removal and surface preparation. Photo evidence on every project."
   headerTransparent={true}
 >
 
@@ -52,8 +52,8 @@ const placeholderProjects = [
         <h1 class="m-0 mb-7 text-[clamp(46px,5vw,68px)] font-light leading-[1.07] text-surface tracking-[-0.025em]">
           Precision you can<br>trust with things<br>that matter.
         </h1>
-        <p class="m-0 mb-11 text-[17px] leading-[1.72] text-surface/65 max-w-[440px]">
-          Specialist laser cleaning for listed stonework, heritage facades, and industrial structures. Non-abrasive, fully documented, and compliant.
+        <p class="m-0 mb-11 text-[17px] leading-[1.72] text-surface/65 max-w-[520px]">
+          Specialist laser cleaning for stonework, brickwork, metal, timber and other surfaces, from listed buildings and heritage sites to fire and soot damaged homes and industrial structures. Non-abrasive, fully documented and compliant.
         </p>
         <div class="flex items-center gap-3.5 flex-wrap">
           <a href="/work/" class="inline-flex items-center h-12 px-8 bg-surface text-accent text-[14px] font-medium tracking-[0.025em] hover:bg-surface/90 transition-colors">
@@ -106,7 +106,7 @@ const placeholderProjects = [
     <div class="max-w-screen-xl mx-auto px-4 sm:px-8 lg:px-12">
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-px bg-neutral-light border-b border-neutral-light">
         {[
-          { label: 'Compliance',     value: 'BS 8221 Compliant Methods' },
+          { label: 'Compliance',     value: 'Cleaning and safety practises aligned with recognised UK standards' },
           { label: 'Accreditation',  value: 'CSCS Registered Operatives' },
           { label: 'Documentation',  value: 'Full Photo Record, Every Project' },
           { label: 'Insurance',      value: '£5M Public Liability Cover' },
@@ -144,7 +144,7 @@ const placeholderProjects = [
           >
             <div class="text-[10px] font-medium tracking-[0.1em] text-neutral-light mb-4 tabular-nums" aria-hidden="true">{s.num}</div>
             <h3 class="m-0 mb-2.5 text-[15.5px] font-medium text-neutral-dark tracking-[-0.01em] leading-[1.3]">{s.name}</h3>
-            <p class="m-0 mb-5 text-[13.5px] leading-[1.65] text-neutral-mid flex-1">{s.desc}</p>
+            <p class="m-0 mb-5 text-[13.5px] leading-[1.65] text-neutral-mid flex-1 text-justify">{s.desc}</p>
             <div class="flex items-center gap-1.5 text-[12px] font-medium text-accent tracking-[0.03em]" aria-hidden="true">
               <span>Learn more</span>
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -219,59 +219,6 @@ const placeholderProjects = [
       <p class="mt-4 text-[11.5px] text-neutral-mid leading-[1.55]">
         Photography added as projects complete. All images taken pre- and post-treatment with consistent framing for accurate comparison.
       </p>
-    </div>
-  </section>
-
-
-  {/* ── CREDENTIALS ── */}
-  <section id="credentials" class="bg-neutral-dark py-24">
-    <div class="max-w-screen-xl mx-auto px-4 sm:px-8 lg:px-12">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-[96px] items-start">
-
-        {/* Stats */}
-        <div>
-          <div class="flex items-center gap-3 mb-3.5">
-            <div class="w-6 h-px bg-surface/30" aria-hidden="true"></div>
-            <span class="text-[10px] font-medium tracking-[0.18em] text-surface/65 uppercase">Track record</span>
-          </div>
-          <h2 class="m-0 mb-12 text-[clamp(28px,3.5vw,38px)] font-light text-surface tracking-[-0.02em] leading-[1.2]">
-            Evidence,<br>not assertion.
-          </h2>
-          <dl class="grid grid-cols-2 gap-px bg-surface/10 border border-surface/10">
-            {stats.map((stat) => (
-              <div class="bg-neutral-dark px-6 py-7">
-                <dt class="text-[12px] text-surface/65 leading-[1.4] order-2">{stat.label}</dt>
-                <dd class="text-[36px] font-light text-surface tracking-[-0.03em] leading-none mb-2 order-1">{stat.value}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-
-        {/* Quote + accreditations */}
-        <div>
-          <blockquote class="px-8 py-8 border border-surface/10 bg-surface/3 mb-7 not-italic">
-            <p class="m-0 mb-5 text-[16.5px] font-light leading-[1.68] text-surface/75 italic">
-              "Every project is preceded by a written method statement, risk assessment, and conservation officer correspondence — delivered as standard, not on request."
-            </p>
-            <cite class="text-[9.5px] tracking-[0.1em] uppercase text-surface/50 not-italic">Pro City Laser Removal</cite>
-          </blockquote>
-
-          <ul class="border-t border-surface/10 list-none m-0 p-0">
-            {[
-              'BS 8221 — Cleaning and surface repair of masonry',
-              'CSCS — Construction Skills Certification Scheme',
-              '£5M public liability insurance',
-              'Conservation-approved laser methods',
-            ].map((item) => (
-              <li class="flex items-center justify-between py-3.5 border-b border-surface/7">
-                <span class="text-[13px] text-surface/65">{item}</span>
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" class="flex-shrink-0 ml-4 text-surface/40"><path d="M2 7l4 4 6-7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-      </div>
     </div>
   </section>
 

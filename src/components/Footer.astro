@@ -4,9 +4,10 @@ import Logo from './Logo.astro';
 const services = [
   { label: 'Graffiti Removal', href: '/services/graffiti/' },
   { label: 'Heritage Conservation', href: '/services/heritage/' },
-  { label: 'Fire Damage', href: '/services/fire-damage/' },
+  { label: 'Fire Damage Remediation', href: '/services/fire-damage/' },
   { label: 'Industrial Cleaning', href: '/services/industrial/' },
   { label: 'Paint Removal', href: '/services/paint-removal/' },
+  { label: 'Surface Preparation', href: '/services/surface-preparation/' },
 ];
 ---
 
@@ -15,12 +16,12 @@ const services = [
     <div class="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr] gap-16 mb-11">
 
       <div>
-        <a href="/" class="flex items-center gap-2.5 mb-4 hover:opacity-80 transition-opacity w-fit text-surface" aria-label="Pro City Laser Removal — home">
+        <a href="/" class="flex items-center gap-2.5 mb-4 hover:opacity-80 transition-opacity w-fit text-surface" aria-label="Pro City Laser Removal and Restoration — home">
           <Logo class="h-7 w-7 flex-shrink-0 text-surface/45" />
-          <span class="text-[13px] font-medium text-surface/60 tracking-tight leading-tight">Pro City Laser Removal</span>
+          <span class="text-[13px] font-medium text-surface/60 tracking-tight leading-tight">Pro City Laser Removal and Restoration Limited</span>
         </a>
         <p class="text-[13px] leading-[1.65] text-surface/50 max-w-[256px] mb-5">
-          Specialist laser cleaning across the UK — graffiti, heritage, fire damage, industrial, and paint removal.
+          Specialist laser cleaning across the UK — graffiti, heritage, brickwork, fire damage, industrial, paint removal and surface preparation.
         </p>
         <div class="text-[13px] leading-[1.8] text-surface/50">
           <div>
@@ -51,7 +52,6 @@ const services = [
           {[
             { label: 'About', href: '/about/' },
             { label: 'Projects', href: '/work/' },
-            { label: 'Blog', href: '/blog/' },
             { label: 'Contact', href: '/contact/' },
           ].map((link) => (
             <li>
@@ -77,7 +77,7 @@ const services = [
     </div>
 
     <div class="flex flex-col sm:flex-row justify-between items-center gap-2 pt-5 border-t border-surface/7 text-[11.5px] text-surface/30">
-      <p>© {new Date().getFullYear()} Pro City Laser Removal Ltd. All rights reserved.</p>
+      <p>© {new Date().getFullYear()} Pro City Laser Removal and Restoration Ltd. All rights reserved.</p>
       <a href="/privacy-policy/" class="hover:text-surface/60 transition-colors">Privacy Policy</a>
     </div>
   </div>

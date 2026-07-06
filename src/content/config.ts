@@ -1,6 +1,6 @@
 import { defineCollection, z } from 'astro:content';
 
-const SERVICE_CATEGORIES = ['graffiti', 'heritage', 'fire-damage', 'industrial', 'paint-removal'] as const;
+const SERVICE_CATEGORIES = ['graffiti', 'heritage', 'fire-damage', 'industrial', 'paint-removal', 'surface-preparation'] as const;
 
 const projects = defineCollection({
   type: 'data',

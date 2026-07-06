@@ -25,9 +25,9 @@ const {
 } = Astro.props;
 
 const canonical = canonicalUrl ?? new URL(Astro.url.pathname, 'https://www.procitylasers.com').href;
-const siteTitle = title === 'Pro City Laser Removal'
+const siteTitle = title === 'Pro City Laser Removal and Restoration'
   ? title
-  : `${title} | Pro City Laser Removal`;
+  : `${title} | Pro City Laser Removal and Restoration`;
 ---
 
 <!doctype html>
@@ -59,7 +59,7 @@ const siteTitle = title === 'Pro City Laser Removal'
     <meta property="og:title" content={siteTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:site_name" content="Pro City Laser Removal" />
+    <meta property="og:site_name" content="Pro City Laser Removal and Restoration" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
