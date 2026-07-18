@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
-  <rect width="100%" height="100%" fill="#f6f5f2"/>
-  <rect x="50" y="50" width="700" height="500" fill="#6b6b6b" opacity="0.1"/>
-  <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="28" font-weight="bold" fill="#41413e">Grade II Church Facade</text>
-  <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="20" fill="#1c425c">[BEFORE LASER CLEANING - WITH GRAFFITI/DIRT]</text>
-  <path d="M 100 450 Q 200 350 300 450 T 500 400" fill="none" stroke="#e05a47" stroke-width="12" stroke-linecap="round"/>
-  <path d="M 200 480 Q 350 380 500 490" fill="none" stroke="#e05a47" stroke-width="8" stroke-linecap="round"/>
+  <rect width="100%" height="100%" fill="#0f2d3f"/>
+  <rect x="50" y="50" width="700" height="500" fill="#12324e" opacity="0.5"/>
+  <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="28" font-weight="bold" fill="#f6f5f2">Grade II Church Facade</text>
+  <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="20" fill="#d7d7d7">[BEFORE LASER CLEANING - WITH GRAFFITI/DIRT]</text>
+  <path d="M 100 450 Q 200 350 300 450 T 500 400" fill="none" stroke="#6b6b6b" stroke-width="12" stroke-linecap="round"/>
+  <path d="M 200 480 Q 350 380 500 490" fill="none" stroke="#6b6b6b" stroke-width="8" stroke-linecap="round"/>
 </svg>

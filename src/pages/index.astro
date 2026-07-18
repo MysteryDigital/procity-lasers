@@ -1,5 +1,8 @@
 ---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
+import BeforeAfterSlider from '../components/BeforeAfterSlider.astro';
 
 const services = [
   { num: '01', slug: 'graffiti',           name: 'Graffiti Removal',         desc: 'Precision graffiti removal from stonework, brick, render, metal and public realm surfaces - heritage or modern. No abrasion, no chemicals, no residue, no substrate damage.' },
@@ -28,6 +31,18 @@ const placeholderProjects = [
   { category: 'Fire Damage',           title: 'Commercial Premises, Manchester',      desc: 'Brick — soot and char remediation' },
   { category: 'Industrial',            title: 'UK Holiday Village Metalwork',         desc: 'Rust removal, prep and paint on outdoor metalwork' },
 ];
+
+const allProjects = await getCollection('projects');
+const heroProject = allProjects.find((p) => p.data.category === 'heritage' && p.data.before && p.data.after);
+const heroCategoryLabel = heroProject ? services.find((s) => s.slug === heroProject.data.category)?.name : undefined;
+
+const heroThumbnails = [
+  { category: 'graffiti', label: 'Graffiti Removal' },
+  { category: 'industrial', label: 'Industrial' },
+].map(({ category, label }) => ({
+  label,
+  project: allProjects.find((p) => p.data.category === category && (p.data.after || p.data.image)),
+}));
 ---
 
 <Base
@@ -65,31 +80,58 @@ const placeholderProjects = [
         </div>
       </div>
 
-      {/* Visual column — before/after placeholder */}
-      <div class="hero-fade-up-2 hidden lg:block" aria-hidden="true">
-        <div class="relative aspect-[4/3] border border-surface/16 overflow-hidden bg-surface-dark">
-          <div class="bg-grid-overlay-subtle absolute inset-0"></div>
-          <div class="absolute left-0 top-0 w-1/2 h-full bg-on-surface/20"></div>
-          <div class="absolute left-1/2 top-0 bottom-0 w-px bg-surface/32 -translate-x-1/2"></div>
-          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-accent/90 border border-surface/22 flex items-center justify-center">
-            <svg width="18" height="10" viewBox="0 0 18 10" fill="none"><path d="M1 5h16M13 1l4 4-4 4M5 1L1 5l4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="text-surface/55"/></svg>
+      {/* Visual column — before/after evidence */}
+      <div class="hero-fade-up-2 hidden lg:block">
+        {heroProject ? (
+          <div class="border border-surface/16 overflow-hidden bg-surface-dark">
+            <div class="px-4 py-[11px] flex justify-between border-b border-surface/7 bg-surface-dark/65">
+              <span class="text-[9px] tracking-[0.14em] uppercase text-surface/40">Project Photography</span>
+              <span class="text-[9px] tracking-[0.1em] text-surface/25">{heroCategoryLabel}</span>
+            </div>
+            <BeforeAfterSlider
+              before={heroProject.data.before!}
+              after={heroProject.data.after!}
+              beforeAlt={`${heroProject.data.title} — before laser cleaning`}
+              afterAlt={`${heroProject.data.title} — after laser cleaning`}
+              beforeCaption={heroProject.data.beforeCaption}
+              afterCaption={heroProject.data.afterCaption}
+              eager={true}
+            />
           </div>
-          <div class="absolute top-0 left-0 right-0 px-4 py-[11px] flex justify-between border-b border-surface/7 bg-surface-dark/65">
-            <span class="text-[9px] tracking-[0.14em] uppercase text-surface/40">Project Photography</span>
-            <span class="text-[9px] tracking-[0.1em] text-surface/25">Heritage Conservation</span>
+        ) : (
+          <div class="relative aspect-[4/3] border border-surface/16 overflow-hidden bg-surface-dark" aria-hidden="true">
+            <div class="bg-grid-overlay-subtle absolute inset-0"></div>
+            <div class="absolute left-0 top-0 w-1/2 h-full bg-on-surface/20"></div>
+            <div class="absolute left-1/2 top-0 bottom-0 w-px bg-surface/32 -translate-x-1/2"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-accent/90 border border-surface/22 flex items-center justify-center">
+              <svg width="18" height="10" viewBox="0 0 18 10" fill="none"><path d="M1 5h16M13 1l4 4-4 4M5 1L1 5l4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="text-surface/55"/></svg>
+            </div>
+            <div class="absolute top-0 left-0 right-0 px-4 py-[11px] flex justify-between border-b border-surface/7 bg-surface-dark/65">
+              <span class="text-[9px] tracking-[0.14em] uppercase text-surface/40">Project Photography</span>
+              <span class="text-[9px] tracking-[0.1em] text-surface/25">Heritage Conservation</span>
+            </div>
+            <div class="absolute bottom-[13px] left-[14px] text-[8.5px] tracking-[0.14em] uppercase text-surface/35">Before</div>
+            <div class="absolute bottom-[13px] right-[14px] text-[8.5px] tracking-[0.14em] uppercase text-surface/50">After</div>
           </div>
-          <div class="absolute bottom-[13px] left-[14px] text-[8.5px] tracking-[0.14em] uppercase text-surface/35">Before</div>
-          <div class="absolute bottom-[13px] right-[14px] text-[8.5px] tracking-[0.14em] uppercase text-surface/50">After</div>
-        </div>
+        )}
         <div class="grid grid-cols-2 gap-1.5 mt-1.5">
-          <div class="aspect-video bg-surface-dark border border-surface/9 relative overflow-hidden">
-            <div class="bg-grid-overlay-subtle absolute inset-0"></div>
-            <div class="absolute bottom-2 left-2.5 text-[8px] tracking-[0.1em] text-surface/30 uppercase">Graffiti Removal</div>
-          </div>
-          <div class="aspect-video bg-surface-dark border border-surface/9 relative overflow-hidden">
-            <div class="bg-grid-overlay-subtle absolute inset-0"></div>
-            <div class="absolute bottom-2 left-2.5 text-[8px] tracking-[0.1em] text-surface/30 uppercase">Industrial</div>
-          </div>
+          {heroThumbnails.map(({ label, project }) => (
+            <div class="aspect-video bg-surface-dark border border-surface/9 relative overflow-hidden">
+              {project ? (
+                <Image
+                  src={project.data.after ?? project.data.image!}
+                  alt={`${project.data.title} after laser cleaning`}
+                  class="absolute inset-0 w-full h-full object-cover"
+                  loading="lazy"
+                  widths={[320, 640]}
+                  sizes="220px"
+                />
+              ) : (
+                <div class="bg-grid-overlay-subtle absolute inset-0" aria-hidden="true"></div>
+              )}
+              <div class="absolute bottom-2 left-2.5 text-[8px] tracking-[0.1em] text-surface/80 uppercase bg-surface-dark/70 px-1.5 py-0.5">{label}</div>
+            </div>
+          ))}
         </div>
         <p class="mt-2.5 text-[11px] text-surface/40 leading-[1.5]">Project photography added on completion of each contract</p>
       </div>

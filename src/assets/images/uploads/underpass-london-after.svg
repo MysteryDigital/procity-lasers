@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
-  <rect width="100%" height="100%" fill="#f6f5f2"/>
-  <rect x="50" y="50" width="700" height="500" fill="#6b6b6b" opacity="0.1"/>
-  <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="28" font-weight="bold" fill="#41413e">Metropolitan Underpass</text>
-  <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="20" fill="#1c425c">[AFTER LASER CLEANING - CONCRETE FULLY RESTORED]</text>
+  <rect width="100%" height="100%" fill="#0f2d3f"/>
+  <rect x="50" y="50" width="700" height="500" fill="#12324e" opacity="0.5"/>
+  <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="28" font-weight="bold" fill="#f6f5f2">Metropolitan Underpass</text>
+  <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="20" fill="#d7d7d7">[AFTER LASER CLEANING - CONCRETE FULLY RESTORED]</text>
   <!-- Clean concrete -->
 </svg>

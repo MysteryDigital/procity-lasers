@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
-  <rect width="100%" height="100%" fill="#14532d" opacity="0.3"/> <!-- green paint base -->
-  <rect x="50" y="50" width="700" height="500" fill="#15803d" opacity="0.2"/>
-  <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="28" font-weight="bold" fill="#41413e">Listed Gatehouse Ironwork</text>
-  <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="20" fill="#14532d">[BEFORE LASER CLEANING - MULTI-LAYER PAINT FAILURES]</text>
-  <circle cx="400" cy="350" r="80" fill="none" stroke="#b45309" stroke-width="12" opacity="0.6"/>
+  <rect width="100%" height="100%" fill="#0f2d3f"/>
+  <rect x="50" y="50" width="700" height="500" fill="#12324e" opacity="0.5"/>
+  <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="28" font-weight="bold" fill="#f6f5f2">Listed Gatehouse Ironwork</text>
+  <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="20" fill="#d7d7d7">[BEFORE LASER CLEANING - MULTI-LAYER PAINT FAILURES]</text>
+  <circle cx="400" cy="350" r="80" fill="none" stroke="#6b6b6b" stroke-width="12" opacity="0.6"/>
 </svg>
