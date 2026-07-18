@@ -13,6 +13,7 @@ export function getStaticPaths() {
     { params: { slug: 'fire-damage' } },
     { params: { slug: 'industrial' } },
     { params: { slug: 'paint-removal' } },
+    { params: { slug: 'surface-preparation' } },
   ];
 }
 
@@ -234,6 +235,46 @@ const meta: Record<string, ServiceMeta> = {
       { q: 'Is laser paint stripping safe for removing lead-based paint?', a: 'Yes, it is one of the safest methods available. Standard scraping or blasting creates highly hazardous lead dust or paint sludge. The laser vaporizes lead paint which is immediately drawn into our extraction system with HEPA filtration, trapping the lead particulates and keeping operatives and the site safe.' },
       { q: 'Can lasers strip paint from wood?', a: 'Yes. Lasers can strip paint from historic timber framing, cladding, and doors. However, wood has a lower thermal threshold than stone or metal, so our operatives calibrate the laser settings carefully to prevent scorching.' },
       { q: 'Can you selectively strip paint layers?', a: 'Yes. If a project requires removing only the top failure layers of paint while leaving the base primer intact, the laser energy can be adjusted to strip coatings layer by layer.' }
+    ]
+  },
+  'surface-preparation': {
+    label: 'Surface Preparation',
+    buyer: 'Contractors and restoration specialists preparing for re-rendering or coating',
+    description: 'Non-abrasive laser surface preparation for stone, brick, metal, and concrete ahead of re-rendering and coating application. UK nationwide.',
+    queryTarget: 'laser surface preparation UK',
+    heroTitle: 'Precision surface profiling and pre-treatment across the UK',
+    intro: [
+      'Re-rendering, re-coating, or bonding new material to an existing surface only holds if the substrate underneath is properly prepared. Grinding, blasting, or chemical etching can leave inconsistent profiles, embedded grit, or residues that undermine adhesion.',
+      'Our laser surface preparation service profiles stone, brick, metal, and concrete to a consistent, contaminant-free finish without media, water, or chemical stripping agents. The laser opens the surface texture just enough for reliable mechanical or chemical bonding, with no risk of over-profiling or substrate damage.',
+      'Every project is documented with before/after evidence and parameter logs, giving contractors a clear handover record ahead of the next trade.'
+    ],
+    advantagesTitle: 'Why laser for surface preparation?',
+    advantages: [
+      { title: 'Consistent, verifiable profile', desc: 'Produces a uniform surface texture across stone, brick, metal, and concrete, optimised for coating or render adhesion.' },
+      { title: 'No embedded media', desc: 'Unlike grit blasting, there is no risk of residual abrasive embedding in the substrate and compromising the bond of the next finish.' },
+      { title: 'Dry, chemical-free process', desc: 'No water or etching chemicals introduced into the substrate, avoiding moisture ingress or chemical residue ahead of re-coating.' },
+      { title: 'Handover-ready documentation', desc: 'Photographic and parameter records provided so the next contractor in the sequence has clear evidence of substrate readiness.' }
+    ],
+    credibilityTitle: 'Surface Preparation Compliance',
+    credibilityText: 'We provide the documentation and consistency principal contractors and specifiers require before the next trade begins.',
+    credibilityPoints: [
+      'Trial patches to confirm profile and bonding performance before full mobilisation',
+      'RAMS and method statements provided for every surface preparation contract',
+      'Zero abrasive media or chemical effluent to manage on site',
+      'Compatible with subsequent render, coating, and paint systems',
+      'Full before/after photographic and parameter record on handover',
+      '£5M Public Liability Insurance for surface preparation contracts'
+    ],
+    processSteps: [
+      { num: '01', title: 'Substrate Survey', desc: 'Identifying the material type, existing coatings or contamination, and the profile required for the next finish.' },
+      { num: '02', title: 'Trial Profiling', desc: 'Testing laser parameters on a trial patch to confirm the correct surface texture and bonding performance.' },
+      { num: '03', title: 'Full Preparation', desc: 'Profiling the surface to specification with integrated extraction to keep the site clean.' },
+      { num: '04', title: 'Handover Verification', desc: 'Documenting the prepared surface with photographic and parameter records before handover to the next trade.' }
+    ],
+    faqs: [
+      { q: 'Which surfaces can be laser prepared?', a: 'Stone, brick, metal, and concrete can all be profiled, with laser parameters calibrated to each substrate to achieve a consistent finish without over-profiling.' },
+      { q: 'Will laser preparation improve coating or render adhesion?', a: 'Yes. The laser opens the surface texture and removes contamination without embedding media or chemical residue, giving a clean, consistent key for the next coating or render system.' },
+      { q: 'Can you provide a trial patch before the full contract?', a: 'Yes. We routinely carry out trial patches to confirm the profile and bonding performance before committing to full mobilisation.' }
     ]
   }
 };

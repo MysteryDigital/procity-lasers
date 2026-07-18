@@ -29,6 +29,7 @@ collections:
           - { label: Fire Damage, value: fire-damage }
           - { label: Industrial Cleaning, value: industrial }
           - { label: Paint Removal, value: paint-removal }
+          - { label: Surface Preparation, value: surface-preparation }
       - { label: Caption, name: caption, widget: text, required: false }
       - label: Standalone image
         name: image
@@ -95,6 +96,7 @@ collections:
 #          - { label: Fire Damage, value: fire-damage }
 #          - { label: Industrial, value: industrial }
 #          - { label: Paint Removal, value: paint-removal }
+#          - { label: Surface Preparation, value: surface-preparation }
 #      - { label: Cover image, name: coverImage, widget: image, required: false }
 #      - { label: Draft, name: draft, widget: boolean, default: true }
 #      - { label: Body, name: body, widget: markdown }

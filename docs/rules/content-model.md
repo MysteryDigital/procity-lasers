@@ -12,7 +12,7 @@ Misalignment breaks the owner's editing workflow silently.
 Each project in `src/content/projects/` holds:
 
 - `title` — display name
-- `category` — one of: `graffiti | heritage | fire-damage | industrial | paint-removal`
+- `category` — one of: `graffiti | heritage | fire-damage | industrial | paint-removal | surface-preparation`
 - `caption` — optional short description
 - `image` — single standalone image (optional)
 - `before` — before image (optional; requires `after`)
