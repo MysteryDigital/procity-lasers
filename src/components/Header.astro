@@ -13,7 +13,7 @@ const pathname = Astro.url.pathname;
   id="site-header"
   data-transparent={transparent || undefined}
   class:list={[
-    'z-50 h-16 border-b transition-colors duration-300',
+    'z-50 h-28 border-b transition-colors duration-300',
     transparent
       ? 'fixed top-0 left-0 right-0 bg-transparent border-transparent'
       : 'bg-surface border-neutral-mid/20',
@@ -25,19 +25,19 @@ const pathname = Astro.url.pathname;
       <a
         href="/"
         class:list={[
-          'flex items-center gap-3 hover:opacity-80 transition-opacity',
+          'flex items-center gap-5 hover:opacity-80 transition-opacity',
           transparent ? 'text-surface' : 'text-neutral-dark',
         ]}
         aria-label="Pro City Laser Removal — home"
       >
-        <Logo class="h-9 w-9 flex-shrink-0" />
+        <Logo class="h-[108px] w-[108px] flex-shrink-0" />
         <div>
           <div class:list={[
-            'text-[13px] font-medium leading-[1.2] tracking-[0.01em]',
+            'text-[36px] font-medium leading-[1.1] tracking-[0.01em]',
             transparent ? 'text-surface' : 'text-neutral-dark',
           ]}>Pro City</div>
           <div class:list={[
-            'text-[9.5px] font-normal uppercase tracking-[0.11em] leading-[1.2]',
+            'text-[24px] font-normal uppercase tracking-[0.11em] leading-[1.1]',
             transparent ? 'text-surface/60' : 'text-neutral-mid',
           ]}>Laser Removal</div>
         </div>

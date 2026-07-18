@@ -1,7 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
+import BeforeAfterSlider from '../../components/BeforeAfterSlider.astro';
 import EnquiryForm from '../../components/EnquiryForm.astro';
 
 export function getStaticPaths() {
@@ -16,87 +18,440 @@ export function getStaticPaths() {
 
 const { slug } = Astro.params;
 
-const meta: Record<string, { label: string; headline: string; description: string; buyer: string; queryTarget: string }> = {
-  graffiti: {
-    label: 'Graffiti Removal',
-    headline: 'Commercial graffiti removal for councils and public realm',
-    description: 'Specialist laser graffiti removal for councils, public realm, and commercial clients across the UK. Full substrate preservation, no ghosting, complete documentation.',
-    buyer: 'Councils, streetscene and highways teams',
-    queryTarget: 'laser graffiti removal council contractor UK',
-  },
+interface ServiceMeta {
+  label: string;
+  buyer: string;
+  description: string;
+  queryTarget: string;
+  heroTitle: string;
+  intro: string[];
+  advantagesTitle: string;
+  advantages: { title: string; desc: string }[];
+  credibilityTitle: string;
+  credibilityText: string;
+  credibilityPoints: string[];
+  processSteps: { num: string; title: string; desc: string }[];
+  faqs: { q: string; a: string }[];
+}
+
+const meta: Record<string, ServiceMeta> = {
   heritage: {
     label: 'Heritage Conservation',
-    headline: 'Non-abrasive laser cleaning for listed buildings and historic stonework',
-    description: 'Laser cleaning for listed buildings, historic stonework, and heritage facades across the UK. Non-abrasive, no moisture, no residue. RAMS and method statements on request.',
-    buyer: 'Conservation architects, heritage trusts, church and listed-building owners',
+    buyer: 'Conservation architects, heritage trusts, and listed-building custodians',
+    description: 'Specialist laser cleaning for listed buildings and historic masonry. Approved by conservation officers — non-abrasive, dry method preserving historic substrates.',
     queryTarget: 'laser cleaning listed buildings UK',
+    heroTitle: 'Non-abrasive laser cleaning for listed buildings and historic stonework',
+    intro: [
+      'Preserving historic facades, monuments, and masonry requires a cleaning method that guarantees zero substrate damage. Traditional abrasive methods like sandblasting or chemical washing carry substantial risk of eroding delicate stone faces, erasing historical tool marks, and introducing harmful moisture.',
+      'Our specialist laser cleaning service provides a non-contact, dry restoration method that is highly selective. By calibrating the laser pulse parameters, we target and vaporize soot, atmospheric pollution, carbon crusts, and biological staining while leaving the underlying historic stone completely undisturbed.',
+      'Approved by conservation officers and heritage consultants, our service includes full method statements, risk assessments, and a photographic record before and after every treatment.'
+    ],
+    advantagesTitle: 'Why laser for heritage conservation?',
+    advantages: [
+      { title: 'Non-abrasive & contact-free', desc: 'No mechanical friction, media impact, or scrubbing. The laser light interacts only with the contaminant, ensuring fragile stone details, carvings, and tool marks are preserved.' },
+      { title: 'Dry process (zero moisture)', desc: 'Unlike steam or pressure washing, our laser process uses no water, eliminating the risk of water ingress, efflorescence, freeze-thaw damage, or biological regrowth.' },
+      { title: 'Chemical-free restoration', desc: 'No acids, alkalis, or solvents are used. This avoids chemical residues leaching into the stonework and eliminates toxic runoffs into the ground or local drains.' },
+      { title: 'Highly selective ablation', desc: 'The laser parameters are precisely calibrated to the absorption threshold of the soot or carbon crust, ensuring it stops automatically when it reaches the historic stone.' }
+    ],
+    credibilityTitle: 'Heritage Compliance & Assurances',
+    credibilityText: 'We provide the absolute documentation and assurance that conservation officers and heritage procurement teams demand.',
+    credibilityPoints: [
+      'Adherence to BS 8221 Code of Practice for cleaning and repair of masonry',
+      'IHBC member consultation and Historic England guidelines compatibility',
+      'Operatives holding CSCS Heritage Skills cards for listed building work',
+      'Comprehensive, conservation-ready RAMS and written Method Statements provided',
+      'Full trial patch testing and documentation prior to contract commencement',
+      '£5M Public Liability Insurance specifically covering work on listed structures'
+    ],
+    processSteps: [
+      { num: '01', title: 'Site Survey & Substrate Analysis', desc: 'We identify the stone or masonry type, evaluate the biological or atmospheric contamination, and check the structural integrity of the substrate.' },
+      { num: '02', title: 'Conservation Trial Patches', desc: 'We perform small, isolated trial patches in inconspicuous areas to calibrate the exact laser frequency, energy density, and speed, demonstrating the results to conservation officers.' },
+      { num: '03', title: 'Method Statement & RAMS', desc: 'We issue a comprehensive Method Statement detailing the calibrated parameters, safety protocols, and waste capture logistics for client and planning approvals.' },
+      { num: '04', title: 'Laser Cleaning & Documentation', desc: 'Our heritage-qualified operatives execute the cleaning with continuous quality checks. We provide a complete photographic and parameter log upon completion.' }
+    ],
+    faqs: [
+      { q: 'Is laser cleaning safe for listed buildings?', a: 'Yes. Laser cleaning is widely considered the safest cleaning method for listed and historic buildings. Because it is non-contact, non-abrasive, and chemical-free, it creates zero risk of surface erosion, mortar wash-out, or moisture penetration. We strictly follow BS 8221 and conservation guidelines.' },
+      { q: 'Will laser cleaning damage carved stone or polychrome surfaces?', a: 'No. The laser parameters are calibrated to the exact ablation threshold of the carbon crust or soot. Once the contamination is vaporized, the laser light is reflected by the clean, historic stone underneath, meaning it cannot erode detail or delicate coatings beneath the grime.' },
+      { q: 'Do you carry out trial patches before starting work?', a: 'Yes. We always carry out localized trial patches on inconspicuous areas of the building. This allows us to establish the correct laser settings, prove the safety of the method to conservation officers, and set the baseline standard for the rest of the project.' },
+      { q: 'Does laser cleaning use water or chemicals?', a: 'No. Laser cleaning is a completely dry, chemical-free process. It does not introduce moisture into the building envelope (eliminating freeze-thaw risk) and creates no chemical runoff that could damage soil or waterways.' }
+    ]
+  },
+  graffiti: {
+    label: 'Graffiti Removal',
+    buyer: 'Local councils, streetscene teams, and commercial asset managers',
+    description: 'Commercial laser graffiti removal for councils and B2B clients in the UK. Safe for brick, concrete, and heritage stone. Full removal with zero ghosting.',
+    queryTarget: 'laser graffiti removal council contractor',
+    heroTitle: 'Commercial graffiti removal for councils and public realm assets',
+    intro: [
+      'Vandalism on public assets, historic brickwork, and retail facades requires swift, thorough removal that doesn\'t leave permanent ghosting or chemical residue. Traditional high-pressure washing often forces pigments deeper into porous surfaces or damages mortar joints.',
+      'Our commercial laser graffiti removal service vaporizes spray paints and permanent markers instantly. It is safe for brick, concrete, stone, and metal, ensuring the original surface is returned to its pre-vandalism state without mechanical wear.',
+      'We work regularly with local authorities and highway contractors under strict compliance frameworks, providing complete RAMS and environmental safety assurances.'
+    ],
+    advantagesTitle: 'Why laser for graffiti removal?',
+    advantages: [
+      { title: 'No ghosting or shadow outlines', desc: 'Laser ablation vaporizes paint pigments deep within the pores, ensuring complete removal without leaving the faint outline of the graffiti common with pressure washing.' },
+      { title: 'Substrate & mortar safe', desc: 'Does not blow out old mortar joints, pit brick faces, or scour concrete surfaces. Keeps the architectural integrity of the wall intact.' },
+      { title: 'No chemicals or runoffs', desc: 'Perfect for public realms and environmental zones. Eliminates the need for containment barriers, neutralizing agents, and contaminated water vacuuming.' },
+      { title: 'Mobile & versatile', desc: 'Effective on sandstone, brick, concrete, granite, metal, and wood. Our mobile units operate efficiently in tight public spaces.' }
+    ],
+    credibilityTitle: 'Public Sector & B2B Compliance',
+    credibilityText: 'Our operations are structured around the safety, environmental, and liability requirements of public realm contracts.',
+    credibilityPoints: [
+      'Fast mobilization times and emergency contract availability',
+      'Operatives holding CSCS cards and safety certifications',
+      'Fully self-contained mobile units with on-board power and vacuum extraction',
+      'RAMS and COSHH documentation issued within 24 hours of site survey',
+      'Environment Agency compliant operations (zero chemical runoff)',
+      '£5M Public Liability Insurance covering public realm contracts'
+    ],
+    processSteps: [
+      { num: '01', title: 'Site Assessment', desc: 'Surveying the surface type and paint type to select the optimal laser settings.' },
+      { num: '02', title: 'Safety Setup', desc: 'Setting up safety screens and containment zones if working in public walkways.' },
+      { num: '03', title: 'Laser Vaporization', desc: 'Rapidly cleaning the graffiti while vacuuming up paint residues.' },
+      { num: '04', title: 'Verification & Sign-off', desc: 'Ensuring no ghosting remains and providing before/after photographic proof.' }
+    ],
+    faqs: [
+      { q: 'Can lasers remove graffiti from porous brick and sandstone?', a: 'Yes. Porous masonry is notoriously difficult because paint absorbs deep into the stone pores. High-pressure washing often leaves ghosting shadows, but laser cleaning vaporizes paint pigment deep within the pores, ensuring complete removal without damaging the stone.' },
+      { q: 'Is there a risk of creating toxic fumes?', a: 'No. Our systems are equipped with close-capture vacuum extraction and high-efficiency HEPA filters that capture the vaporized paint particles and fumes directly at the nozzle, ensuring the air and local environment remain safe.' },
+      { q: 'Do you work under council framework agreements?', a: 'Yes. We regularly work as sub-contractors or framework suppliers for councils, highways departments, and public bodies. We provide full risk assessments, method statements, and operative safety compliance.' }
+    ]
   },
   'fire-damage': {
     label: 'Fire Damage Remediation',
-    headline: 'Fire damage remediation — working directly with loss adjusters and insurers',
-    description: 'Laser soot and char removal for insurance-claim remediation across the UK. Full documentation trail, fast mobilisation, working directly with loss adjusters.',
-    buyer: 'Insurers and loss adjusters',
+    buyer: 'Insurers, loss adjusters, and disaster recovery contractors',
+    description: 'Laser soot and carbon removal for fire damage restoration in the UK. Dry, non-contact cleaning process accelerating building reinstatement.',
     queryTarget: 'fire damage laser cleaning soot removal',
+    heroTitle: 'Fire damage remediation — working directly with loss adjusters and insurers',
+    intro: [
+      'Fire damage in commercial and residential properties leaves heavy soot and char deposits that can corrode building materials and trap toxic odours. Traditional cleanup methods are often invasive and slow, causing secondary water or chemical damage.',
+      'Our laser remediation process vaporizes carbon, soot, and smoke residues from brick, timber, steel, and concrete structural elements. This dry, non-contact method targets only the soot, saving building substrates and significantly reducing property restoration timelines.',
+      'We coordinate directly with insurers, loss adjusters, and principal restoration contractors, delivering transparent documentation trails for audit and claim settlement.'
+    ],
+    advantagesTitle: 'Why laser for fire damage remediation?',
+    advantages: [
+      { title: 'Decontaminates at molecular levels', desc: 'Vaporizes carbon deposits and smoke compounds, neutralizing deep-seated odours at their source rather than masking them with sealants.' },
+      { title: 'Zero secondary moisture damage', desc: 'A dry, contact-free process. Protects structural elements from the water damage, swelling, or corrosion caused by steam or liquid cleaning.' },
+      { title: 'Reveals structural integrity', desc: 'Cleans soot down to the bare substrate, allowing structural engineers to accurately assess concrete or steel health after a fire.' },
+      { title: 'Speeds up reinstatement', desc: 'Significantly faster surface prep than manual scraping or blasting, allowing painters and plasterers to begin reinstatement works sooner.' }
+    ],
+    credibilityTitle: 'Insurance & Claims Support',
+    credibilityText: 'We understand the speed and reporting required to resolve claims and return properties to operation.',
+    credibilityPoints: [
+      'Direct coordination with insurers, loss adjusters, and structural engineers',
+      'Clear post-clean reporting showing substrate health and carbon clearance',
+      'HEPA-filtered extraction for safe particulate and odor containment',
+      'Operatives certified in site safety and structural remediation',
+      'Fast mobilization to secure structural elements and prevent secondary damage',
+      '£5M Public & Employer Liability Insurance for commercial restoration sites'
+    ],
+    processSteps: [
+      { num: '01', title: 'Immediate Survey', desc: 'Assessing the soot depth, substrate heat exposure, and structural accessibility.' },
+      { num: '02', title: 'Calibrated Trials', desc: 'Running test spots to separate carbon and soot from the underlying timber, steel, or brick.' },
+      { num: '03', title: 'Soot Extraction', desc: 'Removing the soot using laser ablation coupled with HEPA air filtration to capture fine particulates.' },
+      { num: '04', title: 'Remediation Report', desc: 'Issuing a clean surface certificate and photo documentation for insurers and contractors.' }
+    ],
+    faqs: [
+      { q: 'Can laser cleaning remove soot from timber joists?', a: 'Yes. Laser cleaning is highly effective at removing charred wood and soot from structural timbers. Because it is dry, it prevents wood swelling and moisture absorption, while neutralizing smoke odours at a molecular level.' },
+      { q: 'How does laser cleaning compare to dry ice blasting for soot?', a: 'While dry ice blasting is also dry, it produces significant noise and high volume of waste particulates that must be swept up. Laser cleaning is quieter, has zero blast media impact, and uses close-capture vacuuming, making it cleaner and less disruptive on busy restoration sites.' },
+      { q: 'Can you provide documentation for our insurance claim?', a: 'Yes. We provide complete pre-treatment and post-treatment photographic logs, parameter records, and safety compliance certificates to assist insurers, loss adjusters, and building owners in settling claims quickly.' }
+    ]
   },
   industrial: {
     label: 'Industrial Cleaning',
-    headline: 'Industrial laser cleaning and surface preparation across the UK',
-    description: 'Industrial laser cleaning and surface preparation for facilities managers and principal contractors across the UK. Method statements, RAMS, full compliance documentation.',
-    buyer: 'Facilities managers, principal contractors',
+    buyer: 'Facilities managers, asset owners, and principal contractors',
+    description: 'Industrial laser cleaning and surface preparation for concrete and steelwork in the UK. Dust-free, media-free surface profiling.',
     queryTarget: 'industrial laser cleaning UK laser surface preparation',
+    heroTitle: 'Industrial laser cleaning and surface preparation for principal contractors',
+    intro: [
+      'Industrial surface preparation and maintenance demand speed, absolute precision, and zero secondary waste. Abrasive blasting produces massive amounts of hazardous grit residue, leading to high cleanup and disposal costs.',
+      'Our industrial laser cleaning service removes oxides, mill scale, rust, oils, and industrial coatings from steelwork, structural concrete, and machinery. It is a highly efficient pre-treatment for re-rendering, coating application, and structural repairs.',
+      'We deliver the compliance documentation principal contractors require, including full COSHH assessments, method statements, and site safety plans.'
+    ],
+    advantagesTitle: 'Why laser for industrial cleaning?',
+    advantages: [
+      { title: 'No blasting media cleanup', desc: 'Eliminates the cost of disposing of tons of contaminated sand, glass, or steel grit. The only waste is the vaporized oxide, collected by our HEPA filter.' },
+      { title: 'In-situ preparation', desc: 'Clean structural steel, welds, and masonry directly on site without dismantling machinery or enclosing large areas.' },
+      { title: 'Uniform surface profile', desc: 'Provides a clean, micro-profiled surface optimal for paint bonding and coating adhesion without creating micro-fractures in metal.' },
+      { title: 'Zero chemical residue', desc: 'No solvents or rust converters to wash off, preventing corrosion under new paint and ensuring environmental safety compliance.' }
+    ],
+    credibilityTitle: 'Industrial Safety & Compliance',
+    credibilityText: 'We operate under CDM guidelines and strict industrial site safety protocols.',
+    credibilityPoints: [
+      'Strict compliance with principal contractor site rules and CDM regulations',
+      'Operative certifications: CSCS, IPAF, PASMA, and confined spaces',
+      'Full COSHH assessments and project-specific Method Statements',
+      'Zero abrasive media footprint — clean near active machinery safely',
+      'Coating manufacturer-compatible surface profiling verification',
+      '£5M Public Liability & £10M Employer\'s Liability Insurance'
+    ],
+    processSteps: [
+      { num: '01', title: 'Technical Consultation', desc: 'Defining surface cleanliness specifications (e.g., Sa 2.5 equivalent) and coating requirements.' },
+      { num: '02', title: 'Parameter Calibrations', desc: 'Testing laser cleaning speeds and surface profiling parameters on the steel or concrete.' },
+      { num: '03', title: 'Precision Ablation', desc: 'High-speed oxide, coating, and rust removal with integrated suction capture.' },
+      { num: '04', title: 'Profile Verification', desc: 'Checking surface profiling consistency and handing over the site for immediate coating.' }
+    ],
+    faqs: [
+      { q: 'What surface cleanliness standards can laser cleaning achieve?', a: 'Our lasers can clean metal surfaces to standard equivalents such as Sa 2.5 or Sa 3 (near-white or white metal cleaning), removing all rust, scale, and coatings for painting or welding.' },
+      { q: 'Can laser cleaning be used near active machinery?', a: 'Yes. Because laser cleaning produces no abrasive dust clouds or chemical overspray, it can be isolated with simple laser-safety screens. This allows us to clean structural steel, welds, and parts on-site without shutting down surrounding machinery.' },
+      { q: 'What certifications do your operatives hold?', a: 'Our operatives are certified in site safety with CSCS cards, IPAF for access platforms, PASMA for towers, and are trained specifically in laser safety and extraction operations.' }
+    ]
   },
   'paint-removal': {
     label: 'Paint Removal',
-    headline: 'Laser paint stripping — substrate-safe coating removal',
-    description: 'Precision laser paint and coating removal across the UK. Full substrate preservation with before/after evidence on every project.',
-    buyer: 'Commercial clients and contractors',
+    buyer: 'Property developers, commercial decorators, and estate managers',
+    description: 'Precision laser paint stripping in the UK. Safe for brick, stone, and wood. Lead-safe containment with HEPA extraction, zero chemical footprint.',
     queryTarget: 'laser paint stripping UK laser coating removal',
-  },
+    heroTitle: 'Precision laser paint stripping and coating removal',
+    intro: [
+      'Removing lead-based paint, anti-climb coatings, and layers of old gloss from masonry and metalwork is traditionally slow, messy, and hazardous. Scraping, chemical strippers, or media blasting generate airborne dust and toxic sludge.',
+      'Our precision laser paint stripping vaporizes coating layers without creating a chemical waste stream. The process targets the bond between the paint and the substrate, lifting the coating cleanly while keeping the base material intact.',
+      'Every project is fully documented, providing clear photographic proof of substrate preservation and coating removal efficiency.'
+    ],
+    advantagesTitle: 'Why laser for paint removal?',
+    advantages: [
+      { title: 'Targeted layer stripping', desc: 'Can be adjusted to remove only the top paint layers or strip down to the bare substrate, depending on the restoration requirements.' },
+      { title: 'Substrate preservation', desc: 'Lifts paint from soft stone, ornate ironwork, and structural timber without scratching, pitting, or softening the base material.' },
+      { title: 'Lead paint compliant', desc: 'Vaporizes lead paint particles into a vacuum extraction system with HEPA filtration, avoiding dangerous lead-dust clouds or contaminated chemical slurry.' },
+      { title: 'No cleanup footprint', desc: 'No media grit or sludge to shovel up. Reduces site footprint and waste management logistics dramatically.' }
+    ],
+    credibilityTitle: 'Safe Coating Extraction',
+    credibilityText: 'We ensure hazardous paints are removed, contained, and documented safely.',
+    credibilityPoints: [
+      'Safe management of lead-based paint removal with dust-free capture',
+      'Detailed surveys to establish paint type and appropriate laser settings',
+      'Operative safety compliance (LEV monitoring and custom PPE)',
+      'RAMS and COSHH assessments provided for all paint stripping projects',
+      'Zero hazardous chemical effluent or abrasive grit waste streams',
+      '£5M Public Liability Insurance for commercial paint removal contracts'
+    ],
+    processSteps: [
+      { num: '01', title: 'Coating Audit', desc: 'Identifying the number of paint layers, presence of lead, and base material type.' },
+      { num: '02', title: 'Targeted Trials', desc: 'Determining the settings to strip layers selectively or down to the bare substrate.' },
+      { num: '03', title: 'Dust-Free Stripping', desc: 'Vaporizing the coatings with close-capture extraction to isolate lead or chemical particles.' },
+      { num: '04', title: 'Substrate Verification', desc: 'Documenting the cleaned, undamaged base surface before painting or finishing.' }
+    ],
+    faqs: [
+      { q: 'Is laser paint stripping safe for removing lead-based paint?', a: 'Yes, it is one of the safest methods available. Standard scraping or blasting creates highly hazardous lead dust or paint sludge. The laser vaporizes lead paint which is immediately drawn into our extraction system with HEPA filtration, trapping the lead particulates and keeping operatives and the site safe.' },
+      { q: 'Can lasers strip paint from wood?', a: 'Yes. Lasers can strip paint from historic timber framing, cladding, and doors. However, wood has a lower thermal threshold than stone or metal, so our operatives calibrate the laser settings carefully to prevent scorching.' },
+      { q: 'Can you selectively strip paint layers?', a: 'Yes. If a project requires removing only the top failure layers of paint while leaving the base primer intact, the laser energy can be adjusted to strip coatings layer by layer.' }
+    ]
+  }
 };
 
 const page = meta[slug];
 const allProjects = await getCollection('projects');
-const categoryProjects = allProjects.filter((p) => p.data.category === slug).slice(0, 6);
+const categoryProjects = allProjects.filter((p) => p.data.category === slug);
+
+// Find first project with a before/after pair to use as the hero slider
+const heroProject = categoryProjects.find((p) => p.data.before && p.data.after);
+const limitedProjects = categoryProjects.slice(0, 6);
 ---
 
 <Base title={page.label} description={page.description}>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <nav aria-label="Breadcrumb" class="text-sm text-neutral-mid mb-8">
-      <ol class="flex gap-2">
-        <li><a href="/" class="hover:text-neutral-dark transition-colors">Home</a></li>
-        <li aria-hidden="true">›</li>
-        <li><a href="/services/" class="hover:text-neutral-dark transition-colors">Services</a></li>
-        <li aria-hidden="true">›</li>
-        <li aria-current="page" class="text-on-surface">{page.label}</li>
-      </ol>
-    </nav>
+  {/* ── HERO SECTION ── */}
+  <div class="bg-surface border-b border-neutral-light">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 grid grid-cols-1 lg:grid-cols-[55%_1fr] gap-12 lg:gap-20 items-center">
+      <div>
+        <nav aria-label="Breadcrumb" class="text-xs text-neutral-mid mb-6">
+          <ol class="flex gap-2 p-0 m-0 list-none">
+            <li><a href="/" class="hover:text-neutral-dark transition-colors">Home</a></li>
+            <li aria-hidden="true" class="text-neutral-mid/50">›</li>
+            <li><a href="/services/" class="hover:text-neutral-dark transition-colors">Services</a></li>
+            <li aria-hidden="true" class="text-neutral-mid/50">›</li>
+            <li aria-current="page" class="text-neutral-dark font-medium">{page.label}</li>
+          </ol>
+        </nav>
+        <p class="text-[10px] font-semibold text-accent uppercase tracking-[0.2em] mb-4">{page.buyer}</p>
+        <h1 class="text-[clamp(32px,3.8vw,52px)] font-light leading-[1.12] text-neutral-dark tracking-[-0.025em] mb-6">
+          {page.heroTitle}
+        </h1>
+        <p class="text-[16px] leading-relaxed text-neutral-mid mb-8 max-w-xl">
+          {page.intro[0]}
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a href="#contact" class="inline-flex items-center h-12 px-8 bg-accent text-surface text-[13px] font-medium tracking-[0.025em] hover:opacity-90 transition-opacity">
+            Request assessment
+          </a>
+          <a href="#advantages" class="inline-flex items-center h-12 px-8 border border-neutral-mid/30 text-neutral-dark text-[13px] font-medium tracking-[0.025em] hover:border-neutral-dark transition-colors">
+            Why laser?
+          </a>
+        </div>
+      </div>
+      <div>
+        {heroProject ? (
+          <div class="border border-neutral-light bg-surface shadow-sm overflow-hidden">
+            <BeforeAfterSlider
+              before={heroProject.data.before!}
+              after={heroProject.data.after!}
+              beforeAlt={heroProject.data.beforeCaption || `${heroProject.data.title} - before cleaning`}
+              afterAlt={heroProject.data.afterCaption || `${heroProject.data.title} - after cleaning`}
+              beforeCaption={heroProject.data.beforeCaption}
+              afterCaption={heroProject.data.afterCaption}
+              eager={true}
+            />
+            <div class="p-4 border-t border-neutral-light bg-surface/50">
+              <p class="text-[10px] uppercase tracking-wider font-semibold text-neutral-mid mb-1">Featured Case Evidence</p>
+              <p class="text-xs font-medium text-neutral-dark">{heroProject.data.title}</p>
+            </div>
+          </div>
+        ) : categoryProjects[0]?.data.image ? (
+          <div class="border border-neutral-light bg-surface shadow-sm overflow-hidden">
+            <Image
+              src={categoryProjects[0].data.image!}
+              alt={categoryProjects[0].data.title}
+              class="w-full h-auto block"
+              loading="eager"
+              widths={[640, 1024]}
+              sizes="(min-width: 1024px) 500px, 100vw"
+            />
+            <div class="p-4 border-t border-neutral-light bg-surface/50">
+              <p class="text-[10px] uppercase tracking-wider font-semibold text-neutral-mid mb-1">Featured Project</p>
+              <p class="text-xs font-medium text-neutral-dark">{categoryProjects[0].data.title}</p>
+            </div>
+          </div>
+        ) : (
+          <div class="aspect-[4/3] bg-neutral-light/20 border border-neutral-light flex flex-col items-center justify-center text-center p-8 relative">
+            <div class="bg-grid-overlay-subtle absolute inset-0 opacity-20"></div>
+            <svg class="text-neutral-mid/30 mb-4" width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <p class="text-xs text-neutral-mid">Project photography will appear here once the gallery is populated.</p>
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
 
-    <header class="max-w-3xl mb-14">
-      <p class="text-xs font-medium text-neutral-mid uppercase tracking-widest mb-3">{page.buyer}</p>
-      <h1 class="text-4xl font-semibold text-neutral-dark mb-6">{page.headline}</h1>
-      <p class="text-lg text-neutral-mid">
-        Service introduction copy to follow — covering what the service is, who needs it,
-        and why laser is the right method for this application.
-      </p>
-    </header>
+  {/* ── SERVICE INTRODUCTION ── */}
+  <section class="py-20 bg-surface border-b border-neutral-light">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div class="lg:col-span-4">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-6 h-px bg-neutral-mid" aria-hidden="true"></div>
+            <span class="text-[10px] font-medium tracking-[0.18em] text-neutral-mid uppercase">Overview</span>
+          </div>
+          <h2 class="text-2xl font-light text-neutral-dark tracking-[-0.01em] leading-tight">Preserving integrity, restoring clarity.</h2>
+        </div>
+        <div class="lg:col-span-8 text-[15px] text-neutral-mid leading-relaxed space-y-6 max-w-2xl">
+          <p>{page.intro[1]}</p>
+          <p>{page.intro[2]}</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    {/* Project evidence */}
-    <section class="mb-16">
-      <div class="flex items-baseline justify-between mb-6">
-        <h2 class="text-xl font-semibold text-neutral-dark">Project evidence</h2>
-        <a href={`/work/${slug}/`} class="text-sm text-accent hover:underline">
-          See all {page.label.toLowerCase()} projects
+  {/* ── WHY LASER (ADVANTAGES) ── */}
+  <section id="advantages" class="py-20 bg-neutral-dark text-surface relative overflow-hidden">
+    <div class="bg-grid-overlay absolute inset-0 opacity-5 pointer-events-none" aria-hidden="true"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div class="max-w-3xl mb-16">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-6 h-px bg-surface/30" aria-hidden="true"></div>
+          <span class="text-[10px] font-medium tracking-[0.18em] text-surface/65 uppercase">Method Advantages</span>
+        </div>
+        <h2 class="text-[clamp(26px,3.5vw,36px)] font-light text-surface tracking-[-0.02em] leading-tight">
+          {page.advantagesTitle}
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12 border-t border-surface/10 pt-12">
+        {page.advantages.map((adv) => (
+          <div>
+            <h3 class="text-[16px] font-medium text-surface mb-3 flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-accent" aria-hidden="true"></span>
+              {adv.title}
+            </h3>
+            <p class="text-sm text-surface/60 leading-relaxed">{adv.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* ── PROCESS OVERVIEW ── */}
+  <section class="py-20 bg-surface border-b border-neutral-light">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mb-16">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-6 h-px bg-neutral-mid" aria-hidden="true"></div>
+          <span class="text-[10px] font-medium tracking-[0.18em] text-neutral-mid uppercase">The Process</span>
+        </div>
+        <h2 class="text-[clamp(26px,3.5vw,36px)] font-light text-neutral-dark tracking-[-0.02em] leading-tight">
+          A rigorous, documented approach.
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-px bg-neutral-light border-t border-neutral-light">
+        {page.processSteps.map((step) => (
+          <div class="bg-surface pt-10 pb-8 px-6 border-b border-neutral-light md:border-b-0 md:pr-8">
+            <span class="text-[10px] font-mono text-neutral-mid block mb-4" aria-hidden="true">{step.num}</span>
+            <h3 class="text-[15px] font-semibold text-neutral-dark mb-3 leading-tight">{step.title}</h3>
+            <p class="text-xs text-neutral-mid leading-relaxed">{step.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* ── CREDIBILITY & COMPLIANCE ── */}
+  <section class="py-20 bg-surface border-b border-neutral-light">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-6 h-px bg-neutral-mid" aria-hidden="true"></div>
+            <span class="text-[10px] font-medium tracking-[0.18em] text-neutral-mid uppercase">Compliance</span>
+          </div>
+          <h2 class="text-3xl font-light text-neutral-dark tracking-[-0.02em] leading-tight mb-6">
+            {page.credibilityTitle}
+          </h2>
+          <p class="text-base text-neutral-mid leading-relaxed max-w-md">
+            {page.credibilityText}
+          </p>
+        </div>
+        <div class="bg-surface/50 border border-neutral-light p-8">
+          <ul class="space-y-4 m-0 p-0 list-none">
+            {page.credibilityPoints.map((point) => (
+              <li class="flex items-start gap-3">
+                <svg class="w-5 h-5 text-accent flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                <span class="text-sm text-neutral-dark leading-snug">{point}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ── PROJECT EVIDENCE ── */}
+  <section class="py-20 bg-surface border-b border-neutral-light">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-end justify-between mb-12 flex-wrap gap-4">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-6 h-px bg-neutral-mid" aria-hidden="true"></div>
+            <span class="text-[10px] font-medium tracking-[0.18em] text-neutral-mid uppercase">Proof</span>
+          </div>
+          <h2 class="text-3xl font-light text-neutral-dark tracking-[-0.02em] leading-tight">Project Evidence</h2>
+        </div>
+        <a href={`/work/${slug}/`} class="inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:opacity-85 transition-opacity">
+          <span>See all {page.label.toLowerCase()} projects</span>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
       </div>
 
-      {categoryProjects.length > 0 ? (
-        <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {categoryProjects.map((p) => (
+      {limitedProjects.length > 0 ? (
+        <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 list-none p-0 m-0">
+          {limitedProjects.map((p) => (
             <li>
               <ProjectCard
                 title={p.data.title}
                 category={p.data.category}
                 caption={p.data.caption}
+                thumbnail={p.data.after ?? p.data.thumbnail ?? p.data.image}
                 href={`/work/${p.data.category}/${p.id}/`}
                 isVideo={!!p.data.videoUrl}
               />
@@ -104,16 +459,35 @@ const categoryProjects = allProjects.filter((p) => p.data.category === slug).sli
           ))}
         </ul>
       ) : (
-        <p class="text-neutral-mid">Project photography for this service will appear here.</p>
+        <p class="text-neutral-mid text-sm">Project photography for this service will appear here.</p>
       )}
-    </section>
+    </div>
+  </section>
 
-    {/* FAQ placeholder */}
-    <section class="mb-16 max-w-2xl">
-      <h2 class="text-xl font-semibold text-neutral-dark mb-6">Frequently asked questions</h2>
-      <p class="text-neutral-mid">Service-specific FAQs to follow.</p>
-    </section>
-  </div>
+  {/* ── FAQS ── */}
+  <section class="py-20 bg-surface">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div class="lg:col-span-4">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-6 h-px bg-neutral-mid" aria-hidden="true"></div>
+            <span class="text-[10px] font-medium tracking-[0.18em] text-neutral-mid uppercase">FAQ</span>
+          </div>
+          <h2 class="text-3xl font-light text-neutral-dark tracking-[-0.02em] leading-tight">Frequently asked questions</h2>
+        </div>
+        <div class="lg:col-span-8">
+          <dl class="space-y-8 m-0 p-0">
+            {page.faqs.map((faq) => (
+              <div>
+                <dt class="text-base font-semibold text-neutral-dark mb-2.5 leading-snug">{faq.q}</dt>
+                <dd class="text-[14px] text-neutral-mid leading-relaxed m-0">{faq.a}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <EnquiryForm serviceContext={page.label} />
 </Base>

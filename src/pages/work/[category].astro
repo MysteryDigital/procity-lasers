@@ -92,6 +92,7 @@ const allCategories = [
               title={p.data.title}
               category={p.data.category}
               caption={p.data.caption}
+              thumbnail={p.data.after ?? p.data.thumbnail ?? p.data.image}
               href={`/work/${p.data.category}/${p.id}/`}
               isVideo={!!p.data.videoUrl}
             />

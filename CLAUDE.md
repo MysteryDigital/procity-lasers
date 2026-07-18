@@ -37,9 +37,14 @@ Surface these rather than silently picking an answer.
 
 ## Current state
 
-**Specification / planning phase.** No application code, build tooling, or tests
-exist yet. Do not invent build/lint/test commands. When implementation begins,
-update this file with real commands.
+**Implementation phase.** The core marketing website is fully set up with Astro, Tailwind, and Decap CMS config. The project compiles successfully with populated mock projects for each category.
+
+## Build and dev commands
+
+- `npm install` — install dependencies
+- `npm run dev` — start local development server
+- `npm run build` — build static site in production mode (outputs to `dist/`)
+- `npm run preview` — preview local production build
 
 ## What is being built
 

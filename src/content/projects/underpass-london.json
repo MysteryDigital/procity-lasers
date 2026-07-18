@@ -1,0 +1,9 @@
+{
+  "title": "Metropolitan Underpass, London",
+  "category": "graffiti",
+  "caption": "Concrete infrastructure — repeat graffiti removal.",
+  "before": "/src/assets/images/uploads/underpass-london-before.svg",
+  "beforeCaption": "Thick aerosol tagging on raw concrete structure",
+  "after": "/src/assets/images/uploads/underpass-london-after.svg",
+  "afterCaption": "Clean concrete facade, zero shadow or ghosting"
+}

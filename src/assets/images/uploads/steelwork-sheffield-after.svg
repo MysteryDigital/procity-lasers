@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
+  <rect width="100%" height="100%" fill="#f6f5f2"/>
+  <rect x="50" y="50" width="700" height="500" fill="#64748b" opacity="0.1"/>
+  <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="28" font-weight="bold" fill="#41413e">Structural Steelwork</text>
+  <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="20" fill="#1c425c">[AFTER LASER CLEANING - PREPARED TO SA 2.5 SURFACE STATUS]</text>
+  <rect x="100" y="300" width="600" height="150" fill="#94a3b8" stroke="#cbd5e1" stroke-width="4"/>
+</svg>
