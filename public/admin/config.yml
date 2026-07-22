@@ -30,6 +30,7 @@ collections:
           - { label: Industrial Cleaning, value: industrial }
           - { label: Paint Removal, value: paint-removal }
           - { label: Surface Preparation, value: surface-preparation }
+          - { label: General / Other, value: general }
       - { label: Caption, name: caption, widget: text, required: false }
       - label: Standalone image
         name: image

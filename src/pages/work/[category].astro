@@ -11,6 +11,7 @@ export function getStaticPaths() {
     { params: { category: 'industrial' } },
     { params: { category: 'paint-removal' } },
     { params: { category: 'surface-preparation' } },
+    { params: { category: 'general' } },
   ];
 }
 
@@ -23,6 +24,7 @@ const categoryLabels: Record<string, string> = {
   industrial: 'Industrial',
   'paint-removal': 'Paint Removal',
   'surface-preparation': 'Surface Preparation',
+  general: 'General',
 };
 
 const label = categoryLabels[category];
@@ -36,6 +38,7 @@ const allCategories = [
   { slug: 'industrial', label: 'Industrial' },
   { slug: 'paint-removal', label: 'Paint Removal' },
   { slug: 'surface-preparation', label: 'Surface Preparation' },
+  { slug: 'general', label: 'General' },
 ];
 ---
 

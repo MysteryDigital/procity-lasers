@@ -2,13 +2,17 @@ import { defineCollection, z } from 'astro:content';
 
 const SERVICE_CATEGORIES = ['graffiti', 'heritage', 'fire-damage', 'industrial', 'paint-removal', 'surface-preparation'] as const;
 
+// Projects may also be tagged 'general' for photos that don't fit a specific service page —
+// shown on /work/ and /work/general/ but has no matching /services/general/ page.
+const PROJECT_CATEGORIES = [...SERVICE_CATEGORIES, 'general'] as const;
+
 const projects = defineCollection({
   type: 'data',
   schema: ({ image }) =>
     z
       .object({
         title: z.string(),
-        category: z.enum(SERVICE_CATEGORIES),
+        category: z.enum(PROJECT_CATEGORIES),
         caption: z.string().optional(),
         image: image().optional(),
         imageCaption: z.string().optional(),
