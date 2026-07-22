@@ -25,12 +25,14 @@ test.describe('homepage', () => {
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   });
 
-  test('hero shows a real before/after photo slider, not the placeholder mock', async ({ page }) => {
-    // Regression check: the hero requires a matching project with before/after
-    // photos and silently falls back to a grey placeholder mock if none is
-    // found (see src/pages/index.astro) — this caught that exact break.
+  test('hero shows the Peterborough Cathedral graffiti-removal photos', async ({ page }) => {
+    // Regression check: the hero pins to a specific project (see
+    // src/pages/index.astro) and has previously both silently fallen back to
+    // a grey placeholder mock, and fallen back to the wrong project's photos.
     await page.goto('/');
-    await expect(page.locator('[data-before-after-slider]').first()).toBeVisible();
+    const slider = page.locator('[data-before-after-slider]').first();
+    await expect(slider).toBeVisible();
+    await expect(slider.locator('img[alt*="Peterborough Cathedral"]').first()).toBeVisible();
   });
 
   test('primary navigation reaches every top-level page', async ({ page }) => {

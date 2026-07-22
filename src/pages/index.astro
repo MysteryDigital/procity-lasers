@@ -34,6 +34,7 @@ const placeholderProjects = [
 
 const allProjects = await getCollection('projects');
 const heroProject =
+  allProjects.find((p) => p.id === 'peterborough-cathedral-graffiti-removal') ??
   allProjects.find((p) => p.data.category === 'heritage' && p.data.before && p.data.after) ??
   allProjects.find((p) => p.data.before && p.data.after);
 const heroCategoryLabel = heroProject ? services.find((s) => s.slug === heroProject.data.category)?.name : undefined;
