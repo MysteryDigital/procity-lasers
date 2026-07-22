@@ -55,9 +55,16 @@ const related = allProjects
       </ol>
     </nav>
 
-    <h1 class="text-3xl font-semibold text-neutral-dark mb-8 max-w-3xl">{data.title}</h1>
+    <h1 class="text-3xl font-semibold text-neutral-dark mb-6 max-w-3xl">{data.title}</h1>
 
-    {/* Primary visual */}
+    {/* Project detail */}
+    {data.caption && (
+      <div class="max-w-2xl mb-8">
+        <p class="text-neutral-mid leading-relaxed">{data.caption}</p>
+      </div>
+    )}
+
+    {/* Primary visual — capped to a viewport-friendly height so the photo never forces scrolling */}
     <div class="mb-10">
       {data.before && data.after ? (
         <BeforeAfterSlider
@@ -68,9 +75,10 @@ const related = allProjects
           beforeCaption={data.beforeCaption}
           afterCaption={data.afterCaption}
           eager={true}
+          constrainHeight={true}
         />
       ) : data.videoUrl ? (
-        <div class="aspect-video">
+        <div class="aspect-video max-h-[60vh] mx-auto">
           <iframe
             src={data.videoUrl}
             title={data.title}
@@ -81,28 +89,23 @@ const related = allProjects
         </div>
       ) : data.image ? (
         <figure>
-          <Image
-            src={data.image}
-            alt={data.title}
-            class="w-full h-auto"
-            loading="eager"
-            fetchpriority="high"
-            widths={[800, 1200, 1600]}
-            sizes="(min-width: 1280px) 1200px, 100vw"
-          />
+          <div class="h-[60vh]">
+            <Image
+              src={data.image}
+              alt={data.title}
+              class="w-full h-full object-cover block"
+              loading="eager"
+              fetchpriority="high"
+              widths={[800, 1200, 1600]}
+              sizes="(min-width: 1280px) 1200px, 100vw"
+            />
+          </div>
           {data.imageCaption && (
             <figcaption class="mt-2 text-xs text-neutral-mid leading-snug">{data.imageCaption}</figcaption>
           )}
         </figure>
       ) : null}
     </div>
-
-    {/* Project detail */}
-    {data.caption && (
-      <div class="max-w-2xl mb-12">
-        <p class="text-neutral-mid leading-relaxed">{data.caption}</p>
-      </div>
-    )}
 
     {/* Related service */}
     <div class="mb-12 border-t border-neutral-mid/10 pt-8">

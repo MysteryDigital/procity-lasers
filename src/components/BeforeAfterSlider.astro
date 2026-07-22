@@ -9,23 +9,24 @@ interface Props {
   beforeCaption?: string;
   afterCaption?: string;
   eager?: boolean;
+  constrainHeight?: boolean;
 }
 
-const { before, after, beforeAlt, afterAlt, beforeCaption, afterCaption, eager = false } = Astro.props;
+const { before, after, beforeAlt, afterAlt, beforeCaption, afterCaption, eager = false, constrainHeight = false } = Astro.props;
 const id = `slider-${Math.random().toString(36).slice(2, 8)}`;
 ---
 
 <div
-  class="relative overflow-hidden select-none"
+  class:list={['relative overflow-hidden select-none', constrainHeight && 'h-[60vh]']}
   data-before-after-slider
   aria-label="Before and after comparison. Use left and right arrow keys to reveal before or after image."
   role="img"
 >
-  <div class="pointer-events-none">
+  <div class:list={['pointer-events-none', constrainHeight && 'h-full']}>
     <Image
       src={after}
       alt={afterAlt}
-      class="w-full h-auto block"
+      class:list={['block', constrainHeight ? 'w-full h-full object-cover' : 'w-full h-auto']}
       loading={eager ? 'eager' : 'lazy'}
       fetchpriority={eager ? 'high' : undefined}
       widths={[640, 1024, 1280, 1920]}
@@ -41,7 +42,7 @@ const id = `slider-${Math.random().toString(36).slice(2, 8)}`;
     <Image
       src={before}
       alt={beforeAlt}
-      class="w-full h-auto block"
+      class:list={['block', constrainHeight ? 'w-full h-full object-cover' : 'w-full h-auto']}
       loading={eager ? 'eager' : 'lazy'}
       fetchpriority={eager ? 'high' : undefined}
       widths={[640, 1024, 1280, 1920]}
