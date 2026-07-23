@@ -26,13 +26,12 @@ const stats = [
   { value: '0',      label: 'Substrate damage incidents' },
 ];
 
-const placeholderProjects = [
-  { category: 'Heritage Conservation', title: 'Peterborough Cathedral',               desc: 'Graffiti removal from historic stonework — before and after images to follow' },
-  { category: 'Fire Damage',           title: 'Commercial Premises, Manchester',      desc: 'Brick — soot and char remediation' },
-  { category: 'Industrial',            title: 'UK Holiday Village Metalwork',         desc: 'Rust removal, prep and paint on outdoor metalwork' },
-];
-
 const allProjects = await getCollection('projects');
+
+const selectedWorkIds = ['fire-damage-brickwork-cleaning', 'staircase-refurbishment', 'ironwork-birmingham'];
+const selectedWork = selectedWorkIds
+  .map((id) => allProjects.find((p) => p.id === id))
+  .filter((p): p is NonNullable<typeof p> => Boolean(p));
 const heroProject =
   allProjects.find((p) => p.id === 'peterborough-cathedral-graffiti-removal') ??
   allProjects.find((p) => p.data.category === 'heritage' && p.data.before && p.data.after) ??
@@ -243,19 +242,22 @@ const heroThumbnails = [
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-neutral-light border border-neutral-light">
-        {placeholderProjects.map((p) => (
+        {selectedWork.map((p) => (
           <div class="bg-surface group">
-            {/* Before/after placeholder — will be replaced with real BeforeAfterSlider */}
-            <div class="aspect-[4/3] relative overflow-hidden bg-neutral-light" aria-hidden="true">
-              <div class="absolute left-0 top-0 w-1/2 h-full bg-neutral-mid/20"></div>
-              <div class="absolute left-1/2 top-0 bottom-0 w-px bg-neutral-dark/14 -translate-x-1/2"></div>
-              <div class="absolute bottom-3 left-3 text-[8.5px] tracking-[0.12em] uppercase text-neutral-mid">Before</div>
-              <div class="absolute bottom-3 right-3 text-[8.5px] tracking-[0.12em] uppercase text-neutral-mid">After</div>
+            <div class="aspect-[4/3] overflow-hidden">
+              <BeforeAfterSlider
+                before={p.data.before!}
+                after={p.data.after!}
+                beforeAlt={`${p.data.title} — before laser cleaning`}
+                afterAlt={`${p.data.title} — after laser cleaning`}
+                constrainHeight={true}
+                heightClass="h-full"
+              />
             </div>
             <div class="px-5 py-4 pb-5">
-              <div class="text-[9px] font-semibold tracking-[0.14em] uppercase text-neutral-mid mb-1.5">{p.category}</div>
-              <div class="text-[15px] font-medium text-neutral-dark mb-1 tracking-[-0.01em]">{p.title}</div>
-              <div class="text-[12.5px] text-neutral-mid leading-[1.5]">{p.desc}</div>
+              <div class="text-[9px] font-semibold tracking-[0.14em] uppercase text-neutral-mid mb-1.5">{services.find((s) => s.slug === p.data.category)?.name ?? p.data.category}</div>
+              <a href={`/work/${p.data.category}/${p.id}/`} class="block text-[15px] font-medium text-neutral-dark mb-1 tracking-[-0.01em] hover:text-accent transition-colors">{p.data.title}</a>
+              <div class="text-[12.5px] text-neutral-mid leading-[1.5]">{p.data.caption}</div>
             </div>
           </div>
         ))}

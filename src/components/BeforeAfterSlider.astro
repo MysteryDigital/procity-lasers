@@ -10,14 +10,15 @@ interface Props {
   afterCaption?: string;
   eager?: boolean;
   constrainHeight?: boolean;
+  heightClass?: string;
 }
 
-const { before, after, beforeAlt, afterAlt, beforeCaption, afterCaption, eager = false, constrainHeight = false } = Astro.props;
+const { before, after, beforeAlt, afterAlt, beforeCaption, afterCaption, eager = false, constrainHeight = false, heightClass = 'h-[60vh]' } = Astro.props;
 const id = `slider-${Math.random().toString(36).slice(2, 8)}`;
 ---
 
 <div
-  class:list={['relative overflow-hidden select-none', constrainHeight && 'h-[60vh]']}
+  class:list={['relative overflow-hidden select-none', constrainHeight && heightClass]}
   data-before-after-slider
   aria-label="Before and after comparison. Use left and right arrow keys to reveal before or after image."
   role="img"
